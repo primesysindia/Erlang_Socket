@@ -1,0 +1,23 @@
+%% My Chatting Application.
+
+{application, chat, [
+	{description, "Primesys Chatting App."},
+	{vsn, "0.1.0"},
+	{id, "git"},
+	{modules, []},
+	{registered, []},
+	{applications, [
+		kernel,
+		stdlib,
+		crypto,
+		ranch,
+		cowlib,
+		cowboy,
+		bullet,
+		jsx,
+		bson,
+		mongodb
+	]},
+	{mod, {chat_app, []}},
+	{env, [ { msg_id, 00000001 } ]}
+]}.

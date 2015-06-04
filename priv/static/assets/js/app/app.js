@@ -1,0 +1,1 @@
+var device_setup_app = angular.module('device_setup_app',['ngResource']);

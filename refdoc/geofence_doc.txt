@@ -1,0 +1,29 @@
+Command -
+
+GFENCE,<N>,<B>,0,<D>,<E>,<F>[,X][,M]#
+Circular Region
+N=1-5;fence number;
+B=ON/OFF;open/close Geo-fence alarm   Default is close.
+
+D=latitude of  the circle center
+
+E=  longitude of  the circle center
+
+F=1~9999; the redius of the circle,  Unit:hectometre
+
+X=IN/OUT;
+IN :enter the circle alarm,
+OUT:out the circle alarm,do not filled means both enter/out the circle will send alarm;
+The default is enter/out will send alarm.
+
+M=0~1;the way to send alarm,
+0:GPRS only,
+1:SMS +GPRS,
+The default is 1
+FENCE,<N>,<B>,1,<D>,<E>,<F>,<G>[,X][,M]#
+
+example Cmd -
+FENCE,1,ON,0,N18.590526,E73.771260,1,,1#
+
+URL Ref -
+http://www.positionlogic.com/running-gps-tracking-business/nine-surprising-ways-to-use-geofencing/

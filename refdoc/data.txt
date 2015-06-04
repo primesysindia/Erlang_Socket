@@ -1,0 +1,273 @@
+
+
+1) Login Packet -
+7878 11 01 0358740050123644 101C 3202 0001 DCC9 0D0A
+
+2) Responce -
+
+78 78 05 01 00 02 EB 47 0D 0A
+
+7878 11 01
+
+7878 11 01 000F 35B7 0D0A
+
+
+ A = <<120,120,17,1,3,88,116,0,80,18,54,68,16,28,50,2,0,1,220,201,13,10>>.
+
+ Data received from device: <<120,120,17,1,3,88,116,0,80,18,54,68,16,28,50,2,0,1,220,201,13,10>>.
+ Data received from device : <<787811010358740050123644101C32020001DCC90D0A>>
+
+ Data received from device : <<787811010358740050123644101C32020017A97E0D0A>>
+ Got Terminal Id : 358740050123644
+ Data received from device : <<781101177E0A>>
+
+ Event Got : {30840,17,1,241070124756514372,4124,12802,1,56521}.
+ .Event Decoder Info Loop.
+
+ -----------------------------
+ Device Tracking Started.
+ Data received from device: <<"GET http://zc.qq.com/cgi-bin/common/attr?id=260714&r=0.2622591277175283 HTTP/1.1\r\nAccept: text/html, application/xhtml+xml, */*\r\nAccept-Language: zh-CN\r\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; 360SE)\r\nAccept-Encoding: gzip, deflate\r\nHost: zc.qq.com\r\nConnection: Keep-Alive\r\n\r\n">>.
+ Data received from device : <<47455420687474703A2F2F7A632E71712E636F6D2F6367692D62696E2F636F6D6D6F6E2F617474723F69643D32363037313426723D302E3236323235393132373731373532383320485454502F312E310D0A4163636570743A20746578742F68746D6C2C206170706C69636174696F6E2F7868746D6C2B786D6C2C202A2F2A0D0A4163636570742D4C616E67756167653A207A682D434E0D0A557365722D4167656E743A204D6F7A696C6C612F352E302028636F6D70617469626C653B204D53494520392E303B2057696E646F7773204E5420362E313B2054726964656E742F352E303B203336305345290D0A4163636570742D456E636F64696E673A20677A69702C206465666C6174650D0A486F73743A207A632E71712E636F6D0D0A436F6E6E656374696F6E3A204B6565702D416C6976650D0A0D0A>>
+ event_decoder:received:{<<"GET http://zc.qq.com/cgi-bin/common/attr?id=260714&r=0.2622591277175283 HTTP/1.1\r\nAccept: text/html, application/xhtml+xml, */*\r\nAccept-Language: zh-CN\r\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; 360SE)\r\nAccept-Encoding: gzip, deflate\r\nHost: zc.qq.com\r\nConnection: Keep-Alive\r\n\r\n">>,
+                         <0.59.0>}
+ Data received from device: <<120,120,17,1,3,88,116,0,80,18,54,68,16,28,50,2,0,
+                              2,238,82,13,10>>.
+ Data received from device : <<787811010358740050123644101C32020002EE520D0A>>
+ Event Got : {30840,17,1,241070124756514372,4124,12802,2,61010}.
+ .Event Decoder Info Loop.Socket Closed by Device.
+
+ =ERROR REPORT==== 17-Mar-2015::14:48:25 ===
+ ** Generic server <0.59.0> terminating
+ ** Last message in was {tcp_closed,#Port<0.449>}
+ ** When Server state == {state,#Port<0.449>,ranch_tcp}
+ ** Reason for termination ==
+ ** {badarg,[{device_tracker_protocol,handle_info,2,
+                                      [{file,"src/device_tracker_protocol.erl"},
+                                       {line,107}]},
+             {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,593}]},
+             {gen_server,handle_msg,5,[{file,"gen_server.erl"},{line,659}]},
+             {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,237}]}]}
+
+ =ERROR REPORT==== 17-Mar-2015::14:48:25 ===
+ Ranch listener tcp_tracker had connection process started with device_tracker_protocol:start_link/4 at <0.59.0> exit with reason: {badarg,[{device_tracker_protocol,handle_info,2,[{file,"src/device_tracker_protocol.erl"},{line,107}]},{gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,593}]},{gen_server,handle_msg,5,[{file,"gen_server.erl"},{line,659}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,237}]}]}
+ Data received from device: <<120,120,17,1,3,88,116,0,80,18,54,68,16,28,50,2,0,
+                              3,255,219,13,10>>.
+ Data received from device : <<787811010358740050123644101C32020003FFDB0D0A>>
+ Event Got : {30840,17,1,241070124756514372,4124,12802,3,65499}.
+ .Event Decoder Info Loop.Socket Closed by Device.
+
+ =ERROR REPORT==== 17-Mar-2015::14:50:17 ===
+ ** Generic server <0.58.0> terminating
+ ** Last message in was {tcp_closed,#Port<0.448>}
+ ** When Server state == {state,#Port<0.448>,ranch_tcp}
+ ** Reason for termination ==
+ ** {badarg,[{device_tracker_protocol,handle_info,2,
+                                      [{file,"src/device_tracker_protocol.erl"},
+                                       {line,107}]},
+             {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,593}]},
+             {gen_server,handle_msg,5,[{file,"gen_server.erl"},{line,659}]},
+             {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,237}]}]}
+
+ =ERROR REPORT==== 17-Mar-2015::14:50:17 ===
+ Ranch listener tcp_tracker had connection process started with device_tracker_protocol:start_link/4 at <0.58.0> exit with reason: {badarg,[{device_tracker_protocol,handle_info,2,[{file,"src/device_tracker_protocol.erl"},{line,107}]},{gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,593}]},{gen_server,handle_msg,5,[{file,"gen_server.erl"},{line,659}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,237}]}]}
+
+
+ -----------------------------
+ Device Tracking Started.
+ Data received from device: <<"GET http://zc.qq.com/cgi-bin/common/attr?id=260714&r=0.6710297052031537 HTTP/1.1\r\nAccept: text/html, application/xhtml+xml, */*\r\nAccept-Language: zh-CN\r\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; 360SE)\r\nAccept-Encoding: gzip, deflate\r\nHost: zc.qq.com\r\nConnection: Keep-Alive\r\n\r\n">>.
+ Data received from device : <<47455420687474703A2F2F7A632E71712E636F6D2F6367692D62696E2F636F6D6D6F6E2F617474723F69643D32363037313426723D302E3637313032393730353230333135333720485454502F312E310D0A4163636570743A20746578742F68746D6C2C206170706C69636174696F6E2F7868746D6C2B786D6C2C202A2F2A0D0A4163636570742D4C616E67756167653A207A682D434E0D0A557365722D4167656E743A204D6F7A696C6C612F352E302028636F6D70617469626C653B204D53494520392E303B2057696E646F7773204E5420362E313B2054726964656E742F352E303B203336305345290D0A4163636570742D456E636F64696E673A20677A69702C206465666C6174650D0A486F73743A207A632E71712E636F6D0D0A436F6E6E656374696F6E3A204B6565702D416C6976650D0A0D0A>>
+ event_decoder:received:{<<"GET http://zc.qq.com/cgi-bin/common/attr?id=260714&r=0.6710297052031537 HTTP/1.1\r\nAccept: text/html, application/xhtml+xml, */*\r\nAccept-Language: zh-CN\r\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; 360SE)\r\nAccept-Encoding: gzip, deflate\r\nHost: zc.qq.com\r\nConnection: Keep-Alive\r\n\r\n">>,
+                         <0.60.0>}
+
+
+ -----------------------------
+ Device Tracking Started.
+ Data received from device: <<"GET http://zc.qq.com/cgi-bin/common/attr?id=260714&r=0.8115269418311070 HTTP/1.1\r\nAccept: text/html, application/xhtml+xml, */*\r\nAccept-Language: zh-CN\r\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; 360SE)\r\nAccept-Encoding: gzip, deflate\r\nHost: zc.qq.com\r\nConnection: Keep-Alive\r\n\r\n">>.
+ Data received from device : <<47455420687474703A2F2F7A632E71712E636F6D2F6367692D62696E2F636F6D6D6F6E2F617474723F69643D32363037313426723D302E3831313532363934313833313130373020485454502F312E310D0A4163636570743A20746578742F68746D6C2C206170706C69636174696F6E2F7868746D6C2B786D6C2C202A2F2A0D0A4163636570742D4C616E67756167653A207A682D434E0D0A557365722D4167656E743A204D6F7A696C6C612F352E302028636F6D70617469626C653B204D53494520392E303B2057696E646F7773204E5420362E313B2054726964656E742F352E303B203336305345290D0A4163636570742D456E636F64696E673A20677A69702C206465666C6174650D0A486F73743A207A632E71712E636F6D0D0A436F6E6E656374696F6E3A204B6565702D416C6976650D0A0D0A>>
+ event_decoder:received:{<<"GET http://zc.qq.com/cgi-bin/common/attr?id=260714&r=0.8115269418311070 HTTP/1.1\r\nAccept: text/html, application/xhtml+xml, */*\r\nAccept-Language: zh-CN\r\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; 360SE)\r\nAccept-Encoding: gzip, deflate\r\nHost: zc.qq.com\r\nConnection: Keep-Alive\r\n\r\n">>,
+                         <0.61.0>}
+
+
+ -----------------------------
+ Device Tracking Started.
+ Data received from device: <<"GET http://zc.qq.com/cgi-bin/common/attr?id=260714&r=0.9864046992182098 HTTP/1.1\r\nAccept: text/html, application/xhtml+xml, */*\r\nAccept-Language: zh-CN\r\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; 360SE)\r\nAccept-Encoding: gzip, deflate\r\nHost: zc.qq.com\r\nConnection: Keep-Alive\r\n\r\n">>.
+ Data received from device : <<47455420687474703A2F2F7A632E71712E636F6D2F6367692D62696E2F636F6D6D6F6E2F617474723F69643D32363037313426723D302E3938363430343639393231383230393820485454502F312E310D0A4163636570743A20746578742F68746D6C2C206170706C69636174696F6E2F7868746D6C2B786D6C2C202A2F2A0D0A4163636570742D4C616E67756167653A207A682D434E0D0A557365722D4167656E743A204D6F7A696C6C612F352E302028636F6D70617469626C653B204D53494520392E303B2057696E646F7773204E5420362E313B2054726964656E742F352E303B203336305345290D0A4163636570742D456E636F64696E673A20677A69702C206465666C6174650D0A486F73743A207A632E71712E636F6D0D0A436F6E6E656374696F6E3A204B6565702D416C6976650D0A0D0A>>
+ event_decoder:received:{<<"GET http://zc.qq.com/cgi-bin/common/attr?id=260714&r=0.9864046992182098 HTTP/1.1\r\nAccept: text/html, application/xhtml+xml, */*\r\nAccept-Language: zh-CN\r\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; 360SE)\r\nAccept-Encoding: gzip, deflate\r\nHost: zc.qq.com\r\nConnection: Keep-Alive\r\n\r\n">>,
+                         <0.62.0>}
+ Socket Closed by Device.
+
+ =ERROR REPORT==== 17-Mar-2015::15:32:21 ===
+ ** Generic server <0.60.0> terminating
+ ** Last message in was {tcp_closed,#Port<0.450>}
+ ** When Server state == {state,#Port<0.450>,ranch_tcp}
+ ** Reason for termination ==
+ ** {badarg,[{device_tracker_protocol,handle_info,2,
+                                      [{file,"src/device_tracker_protocol.erl"},
+                                       {line,107}]},
+             {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,593}]},
+             {gen_server,handle_msg,5,[{file,"gen_server.erl"},{line,659}]},
+             {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,237}]}]}
+
+ =ERROR REPORT==== 17-Mar-2015::15:32:21 ===
+ Ranch listener tcp_tracker had connection process started with device_tracker_protocol:start_link/4 at <0.60.0> exit with reason: {badarg,[{device_tracker_protocol,handle_info,2,[{file,"src/device_tracker_protocol.erl"},{line,107}]},{gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,593}]},{gen_server,handle_msg,5,[{file,"gen_server.erl"},{line,659}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,237}]}]}
+ Socket Closed by Device.
+
+ =ERROR REPORT==== 17-Mar-2015::15:32:25 ===
+ ** Generic server <0.61.0> terminating
+ ** Last message in was {tcp_closed,#Port<0.451>}
+ ** When Server state == {state,#Port<0.451>,ranch_tcp}
+ ** Reason for termination ==
+ ** {badarg,[{device_tracker_protocol,handle_info,2,
+                                      [{file,"src/device_tracker_protocol.erl"},
+                                       {line,107}]},
+             {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,593}]},
+             {gen_server,handle_msg,5,[{file,"gen_server.erl"},{line,659}]},
+             {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,237}]}]}
+
+ =ERROR REPORT==== 17-Mar-2015::15:32:25 ===
+ Ranch listener tcp_tracker had connection process started with device_tracker_protocol:start_link/4 at <0.61.0> exit with reason: {badarg,[{device_tracker_protocol,handle_info,2,[{file,"src/device_tracker_protocol.erl"},{line,107}]},{gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,593}]},{gen_server,handle_msg,5,[{file,"gen_server.erl"},{line,659}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,237}]}]}
+ Socket Closed by Device.
+
+ =ERROR REPORT==== 17-Mar-2015::15:32:33 ===
+ ** Generic server <0.62.0> terminating
+ ** Last message in was {tcp_closed,#Port<0.452>}
+ ** When Server state == {state,#Port<0.452>,ranch_tcp}
+ ** Reason for termination ==
+ ** {badarg,[{device_tracker_protocol,handle_info,2,
+                                      [{file,"src/device_tracker_protocol.erl"},
+                                       {line,107}]},
+             {gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,593}]},
+             {gen_server,handle_msg,5,[{file,"gen_server.erl"},{line,659}]},
+             {proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,237}]}]}
+
+ =ERROR REPORT==== 17-Mar-2015::15:32:33 ===
+ Ranch listener tcp_tracker had connection process started with device_tracker_protocol:start_link/4 at <0.62.0> exit with reason: {badarg,[{device_tracker_protocol,handle_info,2,[{file,"src/device_tracker_protocol.erl"},{line,107}]},{gen_server,try_dispatch,4,[{file,"gen_server.erl"},{line,593}]},{gen_server,handle_msg,5,[{file,"gen_server.erl"},{line,659}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,237}]}]}
+
+
+ -----------------------------
+ Device Tracking Started.
+ Data received from device: <<"GET http://zc.qq.com/cgi-bin/common/attr?id=260714&r=0.3711411853709822 HTTP/1.1\r\nAccept: text/html, application/xhtml+xml, */*\r\nAccept-Language: zh-CN\r\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; 360SE)\r\nAccept-Encoding: gzip, deflate\r\nHost: zc.qq.com\r\nConnection: Keep-Alive\r\n\r\n">>.
+ Data received from device : <<47455420687474703A2F2F7A632E71712E636F6D2F6367692D62696E2F636F6D6D6F6E2F617474723F69643D32363037313426723D302E3337313134313138353337303938323220485454502F312E310D0A4163636570743A20746578742F68746D6C2C206170706C69636174696F6E2F7868746D6C2B786D6C2C202A2F2A0D0A4163636570742D4C616E67756167653A207A682D434E0D0A557365722D4167656E743A204D6F7A696C6C612F352E302028636F6D70617469626C653B204D53494520392E303B2057696E646F7773204E5420362E313B2054726964656E742F352E303B203336305345290D0A4163636570742D456E636F64696E673A20677A69702C206465666C6174650D0A486F73743A207A632E71712E636F6D0D0A436F6E6E656374696F6E3A204B6565702D416C6976650D0A0D0A>>
+ event_decoder:received:{<<"GET http://zc.qq.com/cgi-bin/common/attr?id=260714&r=0.3711411853709822 HTTP/1.1\r\nAccept: text/html, application/xhtml+xml, */*\r\nAccept-Language: zh-CN\r\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; 360SE)\r\nAccept-Encoding: gzip, deflate\r\nHost: zc.qq.com\r\nConnection: Keep-Alive\r\n\r\n">>,
+                         <0.63.0>}
+
+
+ -----------------------------
+ Device Tracking Started.
+ Data received from device: <<"GET http://zc.qq.com/cgi-bin/common/attr?id=260714&r=0.8307076318351461 HTTP/1.1\r\nAccept: text/html, application/xhtml+xml, */*\r\nAccept-Language: zh-CN\r\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; 360SE)\r\nAccept-Encoding: gzip, deflate\r\nHost: zc.qq.com\r\nConnection: Keep-Alive\r\n\r\n">>.
+ Data received from device : <<47455420687474703A2F2F7A632E71712E636F6D2F6367692D62696E2F636F6D6D6F6E2F617474723F69643D32363037313426723D302E3833303730373633313833353134363120485454502F312E310D0A4163636570743A20746578742F68746D6C2C206170706C69636174696F6E2F7868746D6C2B786D6C2C202A2F2A0D0A4163636570742D4C616E67756167653A207A682D434E0D0A557365722D4167656E743A204D6F7A696C6C612F352E302028636F6D70617469626C653B204D53494520392E303B2057696E646F7773204E5420362E313B2054726964656E742F352E303B203336305345290D0A4163636570742D456E636F64696E673A20677A69702C206465666C6174650D0A486F73743A207A632E71712E636F6D0D0A436F6E6E656374696F6E3A204B6565702D416C6976650D0A0D0A>>
+ event_decoder:received:{<<"GET http://zc.qq.com/cgi-bin/common/attr?id=260714&r=0.8307076318351461 HTTP/1.1\r\nAccept: text/html, application/xhtml+xml, */*\r\nAccept-Language: zh-CN\r\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; 360SE)\r\nAccept-Encoding: gzip, deflate\r\nHost: zc.qq.com\r\nConnection: Keep-Alive\r\n\r\n">>,
+                         <0.64.0>}
+
+
+ -----------------------------
+ Device Tracking Started.
+ Data received from device: <<"GET http://zc.qq.com/cgi-bin/common/attr?id=260714&r=0.4646310035198947 HTTP/1.1\r\nAccept: text/html, application/xhtml+xml, */*\r\nAccept-Language: zh-CN\r\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; 360SE)\r\nAccept-Encoding: gzip, deflate\r\nHost: zc.qq.com\r\nConnection: Keep-Alive\r\n\r\n">>.
+ Data received from device : <<47455420687474703A2F2F7A632E71712E636F6D2F6367692D62696E2F636F6D6D6F6E2F617474723F69643D32363037313426723D302E3436343633313030333531393839343720485454502F312E310D0A4163636570743A20746578742F68746D6C2C206170706C69636174696F6E2F7868746D6C2B786D6C2C202A2F2A0D0A4163636570742D4C616E67756167653A207A682D434E0D0A557365722D4167656E743A204D6F7A696C6C612F352E302028636F6D70617469626C653B204D53494520392E303B2057696E646F7773204E5420362E313B2054726964656E742F352E303B203336305345290D0A4163636570742D456E636F64696E673A20677A69702C206465666C6174650D0A486F73743A207A632E71712E636F6D0D0A436F6E6E656374696F6E3A204B6565702D416C6976650D0A0D0A>>
+ event_decoder:received:{<<"GET http://zc.qq.com/cgi-bin/common/attr?id=260714&r=0.4646310035198947 HTTP/1.1\r\nAccept: text/html, application/xhtml+xml, */*\r\nAccept-Language: zh-CN\r\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; 360SE)\r\nAccept-Encoding: gzip, deflate\r\nHost: zc.qq.com\r\nConnection: Keep-Alive\r\n\r\n">>,
+                         <0.65.0>}
+ Socket Closed by Device.
+
+ -----------------------------
+ Device Tracking Started.
+ Data received from device: <<"GET http://zc.qq.com/cgi-bin/common/attr?id=260714&r=0.3658485961722178 HTTP/1.1\r\nAccept: text/html, application/xhtml+xml, */*\r\nAccept-Language: zh-CN\r\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; 360SE)\r\nAccept-Encoding: gzip, deflate\r\nHost: zc.qq.com\r\nConnection: Keep-Alive\r\n\r\n">>.
+ Data received from device : <<47455420687474703A2F2F7A632E71712E636F6D2F6367692D62696E2F636F6D6D6F6E2F617474723F69643D32363037313426723D302E3336353834383539363137323231373820485454502F312E310D0A4163636570743A20746578742F68746D6C2C206170706C69636174696F6E2F7868746D6C2B786D6C2C202A2F2A0D0A4163636570742D4C616E67756167653A207A682D434E0D0A557365722D4167656E743A204D6F7A696C6C612F352E302028636F6D70617469626C653B204D53494520392E303B2057696E646F7773204E5420362E313B2054726964656E742F352E303B203336305345290D0A4163636570742D456E636F64696E673A20677A69702C206465666C6174650D0A486F73743A207A632E71712E636F6D0D0A436F6E6E656374696F6E3A204B6565702D416C6976650D0A0D0A>>
+ event_decoder:received:{<<"GET http://zc.qq.com/cgi-bin/common/attr?id=260714&r=0.3658485961722178 HTTP/1.1\r\nAccept: text/html, application/xhtml+xml, */*\r\nAccept-Language: zh-CN\r\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; 360SE)\r\nAccept-Encoding: gzip, deflate\r\nHost: zc.qq.com\r\nConnection: Keep-Alive\r\n\r\n">>,
+                         <0.66.0>}
+
+
+ -----------------------------
+ Device Tracking Started.
+ Data received from device: <<"GET http://zc.qq.com/cgi-bin/common/attr?id=260714&r=0.7114514232901039 HTTP/1.1\r\nAccept: text/html, application/xhtml+xml, */*\r\nAccept-Language: zh-CN\r\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; 360SE)\r\nAccept-Encoding: gzip, deflate\r\nHost: zc.qq.com\r\nConnection: Keep-Alive\r\n\r\n">>.
+ Data received from device : <<47455420687474703A2F2F7A632E71712E636F6D2F6367692D62696E2F636F6D6D6F6E2F617474723F69643D32363037313426723D302E3731313435313432333239303130333920485454502F312E310D0A4163636570743A20746578742F68746D6C2C206170706C69636174696F6E2F7868746D6C2B786D6C2C202A2F2A0D0A4163636570742D4C616E67756167653A207A682D434E0D0A557365722D4167656E743A204D6F7A696C6C612F352E302028636F6D70617469626C653B204D53494520392E303B2057696E646F7773204E5420362E313B2054726964656E742F352E303B203336305345290D0A4163636570742D456E636F64696E673A20677A69702C206465666C6174650D0A486F73743A207A632E71712E636F6D0D0A436F6E6E656374696F6E3A204B6565702D416C6976650D0A0D0A>>
+ event_decoder:received:{<<"GET http://zc.qq.com/cgi-bin/common/attr?id=260714&r=0.7114514232901039 HTTP/1.1\r\nAccept: text/html, application/xhtml+xml, */*\r\nAccept-Language: zh-CN\r\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; 360SE)\r\nAccept-Encoding: gzip, deflate\r\nHost: zc.qq.com\r\nConnection: Keep-Alive\r\n\r\n">>,
+                         <0.67.0>}
+ Socket Closed by Device.
+
+
+ Cmd Decoder -
+
+
+Cmd Len : 39.
+Cmd : <<"ALLGFENCES:1,0;2,0;3,0;4,0;">>.
+Rem Content : <<35 2C30230000000200E97B920D0A>>
+Eshell V6.4  (abort with ^G)
+(chat_rel@127.0.0.1)1>
+
+
+        352C3023
+
+        0000 0002
+
+
+        00E9
+        7B92
+        0D0A
+
+
+        78 78 57 81
+
+        52
+
+        00 00 00 00
+
+        57 00 48 00 49 00 54
+        00 45 00 3a 00 36 72 b2 4e 2c 00 38 00 38 00 32
+        00 36 00 32 00 36 00 37 00 3b 00 6d 00 6f 00 74
+        00 68 00 65 00 72 00 2c 00 31 00 33 00 33 00 31
+        00 32 00 33 00 34 00 31 00 32 00 33 00 34 00 3b
+        00 23 00
+
+        00 00 00 01
+
+
+        00 0d 4a 5a 0d 0a
+
+
+Command - Longer than 128 bytes
+
+Data received from device: <<120,120,38,129,30,0,0,0,0,83,69,69,80,65,82,65,77,
+                             58,49,48,44,51,48,44,49,48,48,44,49,48,44,53,44,
+                             53,35,0,2,0,85,214,100,13,10>>.
+Data received from device : <<787826811E00000000534545504152414D3A31302C33302C3130302C31302C352C352300020055D6640D0A>>
+Got Unknown Command.
+
+
+TK102B
+GPS and LBS Info Packet -
+
+<<78781F120F0414120E27C401FE99E707EA31010034BA01941B00C90036FF00FB2DC20D0A>>
+
+7878
+1F
+12
+
+Date - 0F0414 120E27
+
+GPS -
+    Info - C4
+    Lat - 01FE99E7
+    Lan - 07EA3101
+    Speed - 00
+    Status - 34BA
+
+LBS -
+    MCC - 0194
+    MNC - 1B
+    Lac - 00C9
+    cellid - 0036FF
+
+00FB
+2DC2
+0D0A
+
+tracker_data_decoder:getLatLanValDD(01FE99E7),
+tracker_data_decoder:getLatLanValDD(07EA3101).
+
+tracker_data_decoder ! { <<120,120,31,18,15,4,30,17,11,15,198,2,63,102,121,8,87,217,103,0,52,34,1,148,27,0,252,0,43,169,3,108,228,46,13,10>>, pid(0.208,0) }.
+
+18.59078388888889,lon,73.77128277777777
+
+pid(0,214,0) ! {irc , #{ event => current_location, data=> #{ lat => 18.69078388888889, lan => 73.87128277777777, speed => 25, timestamp => 1430402126 } } }.
+
+pid(0,214,0) ! {irc , #{ event => current_location, data=> #{ lat => 18.59078388888889, lan => 73.77128277777777} } }.

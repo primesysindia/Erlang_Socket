@@ -1,0 +1,450 @@
+
+c(crc).
+crc:get_crc([16#05, 16#01, 16#00, 16#02]).
+11 01 03 58 74 00 50 12 36 44 10 1C 32 02 00 02
+crc:get_crc([16#11, 16#01, 16#03, 16#58, 16#74, 16#00, 16#50, 16#12, 16#36, 16#44, 16#10, 16#1C,16#32, 16#02, 16#00, 16#02 ]).
+
+To execute nif functions use command into the terminal,
+gcc -o crc_nif.so -fpic -shared crc.c crc_nif.c -I /usr/lib/erlang/usr/include
+
+
+2) Status Information Packet ( 0x13 )
+
+<<78780A13000602000200641A970D0A>>
+
+7878 0A 13 000602000200641A970D0A
+
+3)Server SendsCommand To Terminal (checking) package ( 0x81 )
+
+787857814F00000000534545464E262600440041004426263730333039383334383326260055004E0043004C004526263834343634343331343226260055004E0043004C004526263935363138333833303723230002006510680D0A
+
+7878 57 81
+
+78783B813300000000534545534F533A303931373033303938333438332C3931383434363434333134322C393139353631383338333037230002006663CD0D0A78789A8194000000004354524C504152414D533A4754494D45523D303B54494D45523D31302C33303B5057524C494D49543D303B52494E473D313B43414C4C4D4F44453D323B53494D414C4D3D302C313B424154414C4D3D312C313B5057524F4E414C4D3D312C313B5057524F4646414C4D3D312C313B424C494E44414C4D3D302C36302C32302C313B534F53414C4D3D312C322300000002006B0F620D0A78783081280000000053454554494D453A307C307C7C7C7C7C7C7C7C5D7C7C7C7C7C7C7C5D7C7C7C7C7C7C7C7D00020067B3850D0A
+
+7878 3B 81
+
+78782D812700000000414C4C4746454E4345533A312C303B322C303B332C303B342C303B352C302300000002006CA8370D0A
+
+7878 2D 81
+
+78783081280000000053454554494D453A317C317C7C7C7C7C7C7C7C5D7C7C7C7C7C7C7C5D7C7C7C7C7C7C7C7D000200681CE30D0A
+
+7878 30 81
+
+78781C811600000000570048004900540045003A00230000000001006D4D080D0A
+
+7878 1C 81
+
+78780D8B01945A0C2700E3F1006AA9100D0A
+
+7878 0D 8B
+
+3)Server Send Command To Terminal ( 0x82 )
+
+
+
+
+> Data received from device: <<120,120,17,1,3,88,116,0,80,18,115,85,16,28,50,2,0,
+                             53,115,226,13,10>>.
+Data received from device : <<787811010358740050127355101C3202003573E20D0A>>
+Got Login Info Packet.
+Got Terminal Id : 358127357400505
+Reply to device : <<120,120,5,1,0,53,174,123,13,10>>.
+Reply to device : <<787805010035AE7B0D0A>>
+Data received from device: <<120,120,10,19,0,4,4,0,2,0,54,88,206,13,10>>.
+Data received from device : <<78780A130004040002003658CE0D0A>>
+Got Status Info Packet.
+Reply to device : <<120,120,5,19,0,54,172,205,13,10>>.
+Reply to device : <<787805130036ACCD0D0A>>
+Data received from device: <<120,120,31,129,23,0,0,0,0,83,69,69,70,78,38,38,38,
+                             38,38,38,38,38,38,38,38,38,35,35,0,2,0,55,143,128,
+                             13,10>>.
+Data received from device : <<78781F811700000000534545464E2626262626262626262626262323000200378F800D0A>>
+Got Command ( Less That 255 Bytes. ) Info Packet.
+Cmd : 23.
+Data received from device: <<120,120,22,129,14,0,0,0,0,83,69,69,83,79,83,58,44,
+                             44,35,0,2,0,56,122,42,13,10>>.
+Data received from device : <<787816810E00000000534545534F533A2C2C23000200387A2A0D0A>>
+Got Command ( Less That 255 Bytes. ) Info Packet.
+Cmd : 14.
+Data received from device: <<120,120,154,129,148,0,0,0,0,67,84,82,76,80,65,82,
+                             65,77,83,58,71,84,73,77,69,82,61,48,59,84,73,77,
+                             69,82,61,49,48,44,51,48,59,80,87,82,76,73,77,73,
+                             84,61,48,59,82,73,78,71,61,49,59,67,65,76,76,77,
+                             79,68,69,61,50,59,83,73,77,65,76,77,61,48,44,49,
+                             59,66,65,84,65,76,77,61,49,44,49,59,80,87,82,79,
+                             78,65,76,77,61,49,44,49,59,80,87,82,79,70,70,65,
+                             76,77,61,49,44,49,59,66,76,73,78,68,65,76,77,61,
+                             48,44,54,48,44,50,48,44,49,59,83,79,83,65,76,77,
+                             61,49,44,50,35,0,0,0,2,0,61,56,209,13,10>>.
+Data received from device : <<78789A8194000000004354524C504152414D533A4754494D45523D303B54494D45523D31302C33303B5057524C494D49543D303B52494E473D313B43414C4C4D4F44453D323B53494D414C4D3D302C313B424154414C4D3D312C313B5057524F4E414C4D3D312C313B5057524F4646414C4D3D312C313B424C494E44414C4D3D302C36302C32302C313B534F53414C4D3D312C322300000002003D38D10D0A>>
+Got Command ( Less That 255 Bytes. ) Info Packet.
+Cmd : 148.
+Data received from device: <<120,120,48,129,40,0,0,0,0,83,69,69,84,73,77,69,58,
+                             48,124,48,124,124,124,124,124,124,124,124,93,124,
+                             124,124,124,124,124,124,93,124,124,124,124,124,
+                             124,124,125,0,2,0,57,8,126,13,10>>.
+Data received from device : <<78783081280000000053454554494D453A307C307C7C7C7C7C7C7C7C5D7C7C7C7C7C7C7C5D7C7C7C7C7C7C7C7D00020039087E0D0A>>
+Got Command ( Less That 255 Bytes. ) Info Packet.
+Cmd : 40.
+Data received from device: <<120,120,45,129,39,0,0,0,0,65,76,76,71,70,69,78,67,
+                             69,83,58,49,44,48,59,50,44,48,59,51,44,48,59,52,
+                             44,48,59,53,44,48,35,0,0,0,2,0,62,217,160,13,10>>.
+Data received from device : <<78782D812700000000414C4C4746454E4345533A312C303B322C303B332C303B342C303B352C302300000002003ED9A00D0A>>
+Got Command ( Less That 255 Bytes. ) Info Packet.
+Cmd : 39.
+Data received from device: <<120,120,48,129,40,0,0,0,0,83,69,69,84,73,77,69,58,
+                             49,124,49,124,124,124,124,124,124,124,124,93,124,
+                             124,124,124,124,124,124,93,124,124,124,124,124,
+                             124,124,125,0,2,0,58,109,116,13,10>>.
+Data received from device : <<78783081280000000053454554494D453A317C317C7C7C7C7C7C7C7C5D7C7C7C7C7C7C7C5D7C7C7C7C7C7C7C7D0002003A6D740D0A>>
+Got Command ( Less That 255 Bytes. ) Info Packet.
+Cmd : 40.
+Data received from device: <<120,120,28,129,22,0,0,0,0,87,0,72,0,73,0,84,0,69,
+                             0,58,0,35,0,0,0,0,1,0,63,60,159,13,10>>.
+Data received from device : <<78781C811600000000570048004900540045003A00230000000001003F3C9F0D0A>>
+Got Command ( Less That 255 Bytes. ) Info Packet.
+Cmd : 22.
+Data received from device: <<120,120,13,139,1,204,0,40,102,0,14,238,0,60,26,
+                             156,13,10>>.
+Data received from device : <<78780D8B01CC002866000EEE003C1A9C0D0A>>
+Got Unknown Command.
+Data received from device: <<120,120,59,24,13,1,1,0,29,8,1,204,0,40,102,0,14,
+                             238,65,40,102,0,14,237,83,40,102,0,14,227,85,40,
+                             102,0,15,243,92,40,102,0,14,228,94,0,0,0,0,0,255,
+                             0,0,0,0,0,255,255,0,2,0,64,62,127,13,10>>.
+Data received from device : <<78783B180D0101001D0801CC002866000EEE412866000EED532866000EE3552866000FF35C2866000EE45E0000000000FF0000000000FFFF000200403E7F0D0A>>
+Got Unknown Command.
+Data received from device: <<120,120,10,19,0,4,4,0,2,0,65,95,246,13,10>>.
+Data received from device : <<78780A13000404000200415FF60D0A>>
+Got Status Info Packet.
+Reply to device : <<120,120,5,19,0,65,171,245,13,10>>.
+Reply to device : <<787805130041ABF50D0A>>
+
+
+-----------------------------
+Device Tracking Started.
+Data received from device: <<"GET http://zc.qq.com/cgi-bin/common/attr?id=260714&r=0.8512140922172519 HTTP/1.1\r\nAccept: text/html, application/xhtml+xml, */*\r\nAccept-Language: zh-CN\r\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; 360SE)\r\nAccept-Encoding: gzip, deflate\r\nHost: zc.qq.com\r\nConnection: Keep-Alive\r\n\r\n">>.
+Data received from device : <<47455420687474703A2F2F7A632E71712E636F6D2F6367692D62696E2F636F6D6D6F6E2F617474723F69643D32363037313426723D302E3835313231343039323231373235313920485454502F312E310D0A4163636570743A20746578742F68746D6C2C206170706C69636174696F6E2F7868746D6C2B786D6C2C202A2F2A0D0A4163636570742D4C616E67756167653A207A682D434E0D0A557365722D4167656E743A204D6F7A696C6C612F352E302028636F6D70617469626C653B204D53494520392E303B2057696E646F7773204E5420362E313B2054726964656E742F352E303B203336305345290D0A4163636570742D456E636F64696E673A20677A69702C206465666C6174650D0A486F73743A207A632E71712E636F6D0D0A436F6E6E656374696F6E3A204B6565702D416C6976650D0A0D0A>>
+Got Unknown Command.
+
+
+-----------------------------
+Device Tracking Started.
+Data received from device: <<"GET http://zc.qq.com/cgi-bin/common/attr?id=260714&r=0.1404184990414392 HTTP/1.1\r\nAccept: text/html, application/xhtml+xml, */*\r\nAccept-Language: zh-CN\r\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; 360SE)\r\nAccept-Encoding: gzip, deflate\r\nHost: zc.qq.com\r\nConnection: Keep-Alive\r\n\r\n">>.
+Data received from device : <<47455420687474703A2F2F7A632E71712E636F6D2F6367692D62696E2F636F6D6D6F6E2F617474723F69643D32363037313426723D302E3134303431383439393034313433393220485454502F312E310D0A4163636570743A20746578742F68746D6C2C206170706C69636174696F6E2F7868746D6C2B786D6C2C202A2F2A0D0A4163636570742D4C616E67756167653A207A682D434E0D0A557365722D4167656E743A204D6F7A696C6C612F352E302028636F6D70617469626C653B204D53494520392E303B2057696E646F7773204E5420362E313B2054726964656E742F352E303B203336305345290D0A4163636570742D456E636F64696E673A20677A69702C206465666C6174650D0A486F73743A207A632E71712E636F6D0D0A436F6E6E656374696F6E3A204B6565702D416C6976650D0A0D0A>>
+Got Unknown Command.
+
+
+-----------------------------
+Device Tracking Started.
+Data received from device: <<"GET http://zc.qq.com/cgi-bin/common/attr?id=260714&r=0.1578010603168469 HTTP/1.1\r\nAccept: text/html, application/xhtml+xml, */*\r\nAccept-Language: zh-CN\r\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; 360SE)\r\nAccept-Encoding: gzip, deflate\r\nHost: zc.qq.com\r\nConnection: Keep-Alive\r\n\r\n">>.
+Data received from device : <<47455420687474703A2F2F7A632E71712E636F6D2F6367692D62696E2F636F6D6D6F6E2F617474723F69643D32363037313426723D302E3135373830313036303331363834363920485454502F312E310D0A4163636570743A20746578742F68746D6C2C206170706C69636174696F6E2F7868746D6C2B786D6C2C202A2F2A0D0A4163636570742D4C616E67756167653A207A682D434E0D0A557365722D4167656E743A204D6F7A696C6C612F352E302028636F6D70617469626C653B204D53494520392E303B2057696E646F7773204E5420362E313B2054726964656E742F352E303B203336305345290D0A4163636570742D456E636F64696E673A20677A69702C206465666C6174650D0A486F73743A207A632E71712E636F6D0D0A436F6E6E656374696F6E3A204B6565702D416C6976650D0A0D0A>>
+Got Unknown Command.
+Socket Closed by Device.
+Socket Closed by Device.
+Socket Closed by Device.
+Data received from device: <<120,120,10,19,0,4,4,0,2,0,66,109,109,13,10>>.
+Data received from device : <<78780A13000404000200426D6D0D0A>>
+Got Status Info Packet.
+Reply to device : <<120,120,5,19,0,66,153,110,13,10>>.
+Reply to device : <<787805130042996E0D0A>>
+
+(tcp_tracker_rel@127.0.0.1)1>
+(tcp_tracker_rel@127.0.0.1)1> Data received from device: <<120,120,10,19,0,4,4,0,2,0,67,124,228,13,10>>.
+Data received from device : <<78780A13000404000200437CE40D0A>>
+Got Status Info Packet.
+Reply to device : <<120,120,5,19,0,67,136,231,13,10>>.
+Reply to device : <<78780513004388E70D0A>>
+Data received from device: <<120,120,10,19,0,4,4,0,2,0,68,8,91,13,10>>.
+Data received from device : <<78780A1300040400020044085B0D0A>>
+Got Status Info Packet.
+Reply to device : <<120,120,5,19,0,68,252,88,13,10>>.
+Reply to device : <<787805130044FC580D0A>>
+Data received from device: <<120,120,10,19,0,4,4,0,2,0,69,25,210,13,10>>.
+Data received from device : <<78780A130004040002004519D20D0A>>
+Got Status Info Packet.
+Reply to device : <<120,120,5,19,0,69,237,209,13,10>>.
+Reply to device : <<787805130045EDD10D0A>>
+
+app_supervisor             application
+application_controller     application_master
+auth                       beam_lib
+binary                     bson
+bson_binary                c
+code                       code_server
+crc                        device_tracker_protocol
+dict                       edlin
+edlin_expand               epp
+erl_distribution           erl_epmd
+erl_eval                   erl_lint
+erl_parse                  erl_prim_loader
+erl_scan                   erlang
+error_handler              error_logger
+error_logger_tty_h         erts_internal
+ets                        event_decoder
+file                       file_io_server
+file_server                filename
+gb_sets                    gb_trees
+gen                        gen_event
+gen_server                 gen_tcp
+global                     global_group
+group                      heart
+hipe_unified_loader        inet
+inet_config                inet_db
+inet_gethost_native        inet_parse
+inet_tcp                   inet_tcp_dist
+inet_udp                   init
+io                         io_lib
+io_lib_format              io_lib_pretty
+kernel                     kernel_config
+lists                      mc_connection_man
+mc_cursor_sup              mc_super_sup
+mc_worker                  mc_worker_logic
+mongo                      mongo_app
+mongo_devices_ser          mongo_id_server
+mongo_protocol             net_kernel
+orddict                    ordsets
+os                         otp_ring0
+prim_eval                  prim_file
+prim_inet                  prim_zip
+proc_lib                   proplists
+ram_file                   ranch
+ranch_acceptor             ranch_acceptors_sup
+ranch_app                  ranch_conns_sup
+ranch_listener_sup         ranch_server
+ranch_sup                  ranch_tcp
+rpc                        sets
+shell                      standard_error
+supervisor                 supervisor_bridge
+sys                        tcp_tracker_sup
+tracking_platform          unicode
+user_drv                   user_sup
+zlib
+(tcp_tracker_rel@127.0.0.1)1> Data received from device: <<120,120,10,19,0,5,4,0,2,0,70,47,98,13,10>>.
+Data received from device : <<78780A13000504000200462F620D0A>>
+Got Status Info Packet.
+Reply to device : <<120,120,5,19,0,70,223,74,13,10>>.
+Reply to device : <<787805130046DF4A0D0A>>
+
+(tcp_tracker_rel@127.0.0.1)1>
+(tcp_tracker_rel@127.0.0.1)1> --------------------------------------------------------------------------------------------------
+(tcp_tracker_rel@127.0.0.1)1> Data received from device: <<120,120,10,19,0,5,4,0,2,0,71,62,235,13,10>>.
+Data received from device : <<78780A13000504000200473EEB0D0A>>
+Got Status Info Packet.
+Reply to device : <<120,120,5,19,0,71,206,195,13,10>>.
+Reply to device : <<787805130047CEC30D0A>>
+Data received from device: <<120,120,10,19,0,5,4,0,2,0,72,198,28,13,10>>.
+Data received from device : <<78780A1300050400020048C61C0D0A>>
+Got Status Info Packet.
+Reply to device : <<120,120,5,19,0,72,54,52,13,10>>.
+Reply to device : <<78780513004836340D0A>>
+Data received from device: <<120,120,10,19,0,5,4,0,2,0,73,215,149,13,10>>.
+Data received from device : <<78780A1300050400020049D7950D0A>>
+Got Status Info Packet.
+Reply to device : <<120,120,5,19,0,73,39,189,13,10>>.
+Reply to device : <<78780513004927BD0D0A>>
+Data received from device: <<120,120,59,24,13,1,1,1,14,8,1,204,0,40,102,0,15,
+                             243,90,40,102,0,14,238,71,40,102,0,15,253,83,40,
+                             102,0,14,237,84,40,102,0,14,239,97,40,102,0,14,
+                             227,99,40,102,0,14,228,100,255,0,2,0,74,167,130,
+                             13,10>>.
+Data received from device : <<78783B180D0101010E0801CC002866000FF35A2866000EEE472866000FFD532866000EED542866000EEF612866000EE3632866000EE464FF0002004AA7820D0A>>
+Got Unknown Command.
+Data received from device: <<120,120,10,19,0,5,4,0,2,0,75,244,135,13,10>>.
+Data received from device : <<78780A130005040002004BF4870D0A>>
+Got Status Info Packet.
+Reply to device : <<120,120,5,19,0,75,4,175,13,10>>.
+Reply to device : <<78780513004B04AF0D0A>>
+
+
+-----------------------------
+Device Tracking Started.
+Data received from device: <<"GET http://zc.qq.com/cgi-bin/common/attr?id=260714&r=0.8935125766630300 HTTP/1.1\r\nAccept: text/html, application/xhtml+xml, */*\r\nAccept-Language: zh-CN\r\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; 360SE)\r\nAccept-Encoding: gzip, deflate\r\nHost: zc.qq.com\r\nConnection: Keep-Alive\r\n\r\n">>.
+Data received from device : <<47455420687474703A2F2F7A632E71712E636F6D2F6367692D62696E2F636F6D6D6F6E2F617474723F69643D32363037313426723D302E3839333531323537363636333033303020485454502F312E310D0A4163636570743A20746578742F68746D6C2C206170706C69636174696F6E2F7868746D6C2B786D6C2C202A2F2A0D0A4163636570742D4C616E67756167653A207A682D434E0D0A557365722D4167656E743A204D6F7A696C6C612F352E302028636F6D70617469626C653B204D53494520392E303B2057696E646F7773204E5420362E313B2054726964656E742F352E303B203336305345290D0A4163636570742D456E636F64696E673A20677A69702C206465666C6174650D0A486F73743A207A632E71712E636F6D0D0A436F6E6E656374696F6E3A204B6565702D416C6976650D0A0D0A>>
+Got Unknown Command.
+
+
+-----------------------------
+Device Tracking Started.
+Data received from device: <<"GET http://zc.qq.com/cgi-bin/common/attr?id=260714&r=0.0685820675562599 HTTP/1.1\r\nAccept: text/html, application/xhtml+xml, */*\r\nAccept-Language: zh-CN\r\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; 360SE)\r\nAccept-Encoding: gzip, deflate\r\nHost: zc.qq.com\r\nConnection: Keep-Alive\r\n\r\n">>.
+Data received from device : <<47455420687474703A2F2F7A632E71712E636F6D2F6367692D62696E2F636F6D6D6F6E2F617474723F69643D32363037313426723D302E3036383538323036373535363235393920485454502F312E310D0A4163636570743A20746578742F68746D6C2C206170706C69636174696F6E2F7868746D6C2B786D6C2C202A2F2A0D0A4163636570742D4C616E67756167653A207A682D434E0D0A557365722D4167656E743A204D6F7A696C6C612F352E302028636F6D70617469626C653B204D53494520392E303B2057696E646F7773204E5420362E313B2054726964656E742F352E303B203336305345290D0A4163636570742D456E636F64696E673A20677A69702C206465666C6174650D0A486F73743A207A632E71712E636F6D0D0A436F6E6E656374696F6E3A204B6565702D416C6976650D0A0D0A>>
+Got Unknown Command.
+
+
+-----------------------------
+Device Tracking Started.
+Data received from device: <<"GET http://zc.qq.com/cgi-bin/common/attr?id=260714&r=0.7731546359754662 HTTP/1.1\r\nAccept: text/html, application/xhtml+xml, */*\r\nAccept-Language: zh-CN\r\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; 360SE)\r\nAccept-Encoding: gzip, deflate\r\nHost: zc.qq.com\r\nConnection: Keep-Alive\r\n\r\n">>.
+Data received from device : <<47455420687474703A2F2F7A632E71712E636F6D2F6367692D62696E2F636F6D6D6F6E2F617474723F69643D32363037313426723D302E3737333135343633353937353436363220485454502F312E310D0A4163636570743A20746578742F68746D6C2C206170706C69636174696F6E2F7868746D6C2B786D6C2C202A2F2A0D0A4163636570742D4C616E67756167653A207A682D434E0D0A557365722D4167656E743A204D6F7A696C6C612F352E302028636F6D70617469626C653B204D53494520392E303B2057696E646F7773204E5420362E313B2054726964656E742F352E303B203336305345290D0A4163636570742D456E636F64696E673A20677A69702C206465666C6174650D0A486F73743A207A632E71712E636F6D0D0A436F6E6E656374696F6E3A204B6565702D416C6976650D0A0D0A>>
+Got Unknown Command.
+Socket Closed by Device.
+Socket Closed by Device.
+Socket Closed by Device.
+Data received from device: <<120,120,10,19,0,6,4,0,2,0,76,140,69,13,10>>.
+Data received from device : <<78780A130006040002004C8C450D0A>>
+Got Status Info Packet.
+Reply to device : <<120,120,5,19,0,76,112,16,13,10>>.
+Reply to device : <<78780513004C70100D0A>>
+Data received from device: <<120,120,59,24,13,1,1,1,24,8,1,204,0,40,102,0,14,
+                             238,66,40,102,0,14,237,85,40,102,0,14,227,89,40,
+                             102,0,15,243,99,40,102,0,14,228,101,40,102,0,16,
+                             135,101,36,146,0,14,228,103,255,0,2,0,77,124,170,
+                             13,10>>.
+Data received from device : <<78783B180D010101180801CC002866000EEE422866000EED552866000EE3592866000FF3632866000EE4652866001087652492000EE467FF0002004D7CAA0D0A>>
+Got Unknown Command.
+Data received from device: <<120,120,10,19,0,6,4,0,2,0,78,175,87,13,10>>.
+Data received from device : <<78780A130006040002004EAF570D0A>>
+Got Status Info Packet.
+Reply to device : <<120,120,5,19,0,78,83,2,13,10>>.
+Reply to device : <<78780513004E53020D0A>>
+Data received from device: <<120,120,10,19,0,6,4,0,2,0,79,190,222,13,10>>.
+Data received from device : <<78780A130006040002004FBEDE0D0A>>
+Got Status Info Packet.
+Reply to device : <<120,120,5,19,0,79,66,139,13,10>>.
+Reply to device : <<78780513004F428B0D0A>>
+
+(tcp_tracker_rel@127.0.0.1)1>
+(tcp_tracker_rel@127.0.0.1)1> ------------------------------------
+(tcp_tracker_rel@127.0.0.1)1>
+(tcp_tracker_rel@127.0.0.1)1> Data received from device: <<120,120,10,19,0,6,4,0,2,0,80,86,168,13,10>>.
+Data received from device : <<78780A130006040002005056A80D0A>>
+Got Status Info Packet.
+Reply to device : <<120,120,5,19,0,80,170,253,13,10>>.
+Reply to device : <<787805130050AAFD0D0A>>
+
+Data received from device : <<787819100F0401111338C5026C19510C38D1E60014190002005757D30D0A>>
+Got GPS Info Packet.
+
+Data received from device : <<787819100F0401111837C7026C19E40C38D10E0014190002005CD6C70D0A>>
+Got GPS Info Packet.
+
+7878 19 10    0F 04 01 11 13 38   C5   026C1951 0C38D1E6 00 1419 0002    0057 57D3 0D0A
+
+7878 19 10    0B03110A100F CF 027AC8570C4657350014000001000452830D0A
+
+026C1951
+
+40^63.8801' = (40x60+63.8801)x3000 =
+
+
+At Our Loc :-
+
+7878 19 10    0F0401 132510 C5 01FE988B 07EA3074 0014A90002004E40500D0A
+
+Lat => 01FE988B =  = (33*60+46.2411)*3000 = 60787233
+Lan => 07EA3074 = 132788340 =                       = 24236502
+
+33462411 / 100000 = 334.62411
+
+334.62411 / 100 = deg =
+
+
+(X×60+Y)×30000= 33462411/30000
+
+X x 60 + Y = 1115.4137
+
+1115.4137 / 100 = 11.154137 deg = 11
+
+1115.4137 - 1100 = 15.4137 = min
+
+$deg + ($min/60)
+
+11 + (15.4137/60) = 11.256895
+
+
+<<787819100F0401132A0FC601FE983D07EA2F1E02148700020054A55F0D0A>>
+
+7878 19 10 0F0401 132A0F C6 01FE983D 07EA2F1E 0214870002 0054 A55F 0D0A
+
+01FE983D
+
+E.g. For 22°32.7658′, (22×60+32.7658)×30000=40582974,then convert it to hexadecimal number 0x02
+0x6B 0x3F 0x3E
+
+7878 19 10 0B0311 0A100F CF 027AC857 0C465735 0014000001 0004 5283 0D0A
+
+7878 05 10 0004 5138 0D0A
+
+Lat )
+
+027AC857
+
+27AC857 = 41601111
+
+41601111/30000 = 1386.7037
+
+1386.7037/60= 23.1117283333
+
+get 23
+
+23.1117283333 - 23 = 0.1117283333
+
+0.1117283333*60=6.70369998
+
+Lat Val = 23#6.7036
+
+
+Lan ) 0C465735 = 205936437
+
+205936437/30000 = 6864.5479
+
+6864.5479/60 = 114.409131667
+
+get 114
+
+0.409131667 * 60 = 24.54790002
+
+Land Val = 114#24.54790002
+
+
+
+--------------------------
+
+
+26B3F3E(Hexadecimal)=40582974(Decimal)
+40582974/30000=1352.7658
+1352.7658/60=22.54609666666667
+get 22
+22.54609666666667-22=0.54609666666667
+0.54609666666667*60=32.7658
+at last the value is 2232.7658
+
+
+01FE983D = 33462333
+
+33462333/30000 = 1115.4111 / 60 = 18.590185 = 18
+
+0.590185 * 60 = 35.4111
+
+Lat = 18#35.4111
+
+07EA2F1E = 132787998
+
+132787998/30000 = 4426.2666 / 60 = 73.77111 = 73
+
+0.77111 * 60 = 46.2666
+
+
+
+Land = 73#46.2666
+
+Got Unknown Command.
+
+GPS Info Packet -
+Data received from device: <<120,120,25,16,15,4,4,16,54,28,197,1,254,150,177,7,234,57,170,42,21,12,0,2,0,17,105,161,13,10>>.
+Data received from device : <<787819100F040410361CC501FE96B107EA39AA2A150C0002001169A10D0A>>
+Got GPS Info Packet.
+Lat/Lan : 18.589965.
+Lat/Lan : 73.77261.
+Lat Val : {18.589965,73.77261}.
+.Speed : 42.
+.GPS Status : {{gps_real_time,0},
+              {gps_position,1},
+              {lon_direction,e},
+              {lat_direction,n},
+              268}.
+.Reply to device : <<120,120,5,16,0,17,22,20,13,10>>.
+Reply to device : <<78780510001116140D0A>>
+
+
