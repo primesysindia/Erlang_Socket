@@ -137,6 +137,16 @@ handle_call({ set_device, StudentId, ParentId, DeviceId }, _From, [{ Connection,
 			io:format("Device ID (IMEI Number) is not registered.~n"),
 			{reply, <<"Device ID (IMEI Number) is not registered.">>, [{ Connection, Collection }] };
 		_N ->
+
+%% 			First Remove Previously registered devices for the student
+			Command_1 = {'$set', {
+				student, 0,
+				parent, 0
+			}},
+
+			ok = mongo:update(Connection, Collection, { student, StudentId, parent, ParentId }, Command_1),
+
+%% 			Register New Device to the student.
 			Command = {'$set', {
 				student, StudentId,
 				parent, ParentId
