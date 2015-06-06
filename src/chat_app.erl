@@ -25,7 +25,7 @@ start(_Type, _Args) ->
 
 	{ok, _} = ranch:start_listener(tcp_chat, 1,	ranch_tcp, [{port, 5555}], handle_mobile_tcp_protocol, []),
 
-	{ok, _} = ranch:start_listener(tcp_tracker, 1,	ranch_tcp, [{port, 6464}], device_tracker_protocol, []),
+	{ok, _} = ranch:start_listener(tcp_tracker, 1,	ranch_tcp, [{port, 6666}], device_tracker_protocol, []),
 %% 	Data = <<120,120,13,1,3,85,72,128,32,16,116,133,0,12,136,226,13,10>>,
 %% 	tracker_data_decoder ! { Data, self() },
 	chat_sup:start_link().
