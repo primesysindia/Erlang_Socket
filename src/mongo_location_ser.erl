@@ -89,7 +89,7 @@ handle_cast({ get_gps_locations, { Pid, StudentId, Timestamp } }, [{ Connection,
 			irc ! { error, Pid, device_id_not_found };
 		{device, DeviceId} ->
 %% 			Todo : Need to update the condition to use the timestamp value.
-			io:format("History Got : ~p.~n", [{ Timestamp, DeviceId}]),
+%% 			io:format("History Got : ~p.~n", [{ Timestamp, DeviceId}]),
 			case mongo:command(Connection,
 							{aggregate, Collection, pipeline,
 								[
@@ -139,15 +139,18 @@ getCursorList({{Col, L}}, Col, Cursor, Acc) ->
 %% 	end.
 
 locations_skip_logic(Pid, Result) ->
-	locations_skip_logic(Pid, Result, 0, 0).
+	locations_skip_logic(Pid, Result, 0, 0, []).
 
-locations_skip_logic(_Pid, [], _Count, Total) -> io:format("Total : ~p.~n",[Total]), ok;
+locations_skip_logic(Pid, [], _Count, Total, Acc) ->
+	Pid ! {irc, #{ event => todays_loc, data => Acc }},
+	io:format("Total : ~p.~n",[Total]), ok;
 
-locations_skip_logic(_Pid, _Result, _Count, Total) when Total > 100-> io:format("Done Total : ~p.~n",[Total]), ok;
+locations_skip_logic(Pid, _Result, _Count, Total, Acc) when Total > 100->
+	Pid ! {irc, #{ event => todays_loc, data => Acc }},
+	io:format("Done Total : ~p.~n",[Total]), ok;
 
-locations_skip_logic(Pid, [ { location, {lat, _Lat, lon, _Lan}, speed, Speed, timestamp, _Timestamp} | T ], Count, Total) when Speed < 5, Count < 2 ->
-	locations_skip_logic(Pid, T, Count+1, Total);
+locations_skip_logic(Pid, [ { location, {lat, _Lat, lon, _Lan}, speed, Speed, timestamp, _Timestamp} | T ], Count, Total, Acc) when Speed < 5, Count < 2 ->
+	locations_skip_logic(Pid, T, Count+1, Total, Acc);
 
-locations_skip_logic(Pid, [ { location, {lat, Lat, lon, Lan}, speed, Speed, timestamp, Timestamp} | T ], _Count, Total) ->
-	Pid ! {irc, #{ event => todays_loc, data=> #{ lat => Lat, lan => Lan, speed => Speed, timestamp => Timestamp } }},
-	locations_skip_logic(Pid, T, 0, Total+1).
+locations_skip_logic(Pid, [ { location, {lat, Lat, lon, Lan}, speed, Speed, timestamp, Timestamp} | T ], _Count, Total, Acc) ->
+	locations_skip_logic(Pid, T, 0, Total+1, [ #{ lat => Lat, lan => Lan, speed => Speed, timestamp => Timestamp } | Acc]).
