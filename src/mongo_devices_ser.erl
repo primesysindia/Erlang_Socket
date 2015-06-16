@@ -10,7 +10,11 @@ start_link() ->
 
 %% Macros
 -define(DEMO_STUDENT, <<"demo_student">>).
--define(DEMO_DEVICE, 355488020107485). %% 355488020107485
+-define(DEMO_STUDENT_DEVICE, 355488020107485).
+-define(DEMO_CAR, <<"demo_car">>).
+-define(DEMO_CAR_DEVICE, 355488020113718).
+-define(DEMO_PET, <<"demo_pet">>).
+-define(DEMO_PET_DEVICE, 358740050123966).
 
 %%% API's
 
@@ -108,9 +112,11 @@ handle_call({get_device_id, { student_id, StudentId } }, _From, [{ Connection, C
 		     {{device, DeviceId}} ->
 			     {device, DeviceId};
 		     {} ->
-			     case StudentId == ?DEMO_STUDENT of
-					 true -> {device, ?DEMO_DEVICE };
-					 false -> {ok, error}
+			     if
+				     StudentId == ?DEMO_STUDENT -> {device, ?DEMO_STUDENT_DEVICE};
+				     StudentId == ?DEMO_CAR -> {device, ?DEMO_CAR_DEVICE };
+				     StudentId == ?DEMO_PET -> {device, ?DEMO_PET_DEVICE };
+				     true -> {ok, error}
 			     end
 	     end,
 	{reply, Id , [{ Connection, Collection }] };
