@@ -68,8 +68,10 @@ init([]) ->
 	MongoDevicesSerChild = { 'mongo_devices_ser', { 'mongo_devices_ser', start_link, [] }, Restart, Shutdown, Type, ['mongo_devices_ser'] },
 	MongoLocationSerChild = { 'mongo_location_ser', { 'mongo_location_ser', start_link, [] }, Restart, Shutdown, Type, ['mongo_location_ser'] },
 	MongoFriendsSerChild = { 'mongo_friends_ser', { 'mongo_friends_ser', start_link, [] }, Restart, Shutdown, Type, ['mongo_friends_ser'] },
+	MongoGeoFenceSerChild = { 'mongo_geo_fence_ser', { 'mongo_geo_fence_ser', start_link, [] }, Restart, Shutdown, Type, ['mongo_geo_fence_ser'] },
+	CleanupSerChild = { 'cleanup', { 'cleanup', start_link, [] }, Restart, Shutdown, Type, ['cleanup'] },
 
-	{ok, {SupFlags, [ EventDecoderChild, IrcChild, TrackerDataDecoderChild, MongoUsersSerChild, MongoMessagesSerChild, MongoGroupSerChild, GetGpsLocationChild, MongoDevicesSerChild, MongoLocationSerChild, MongoFriendsSerChild ]}}.
+	{ok, {SupFlags, [ EventDecoderChild, IrcChild, TrackerDataDecoderChild, MongoUsersSerChild, MongoMessagesSerChild, MongoGroupSerChild, GetGpsLocationChild, MongoDevicesSerChild, MongoLocationSerChild, MongoFriendsSerChild, MongoGeoFenceSerChild, CleanupSerChild ]}}.
 
 %%%===================================================================
 %%% Internal functions

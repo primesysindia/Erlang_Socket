@@ -1,4 +1,4 @@
--module(mongo_users_ser ).
+-module(mongo_users_ser).
 -behaviour(gen_server).
 -export([start_link/0, set_app_id/1, count/1, insert/1, getPids/1, getPids/2, update/2, removePid/1, getPids/0, getgroupPids/1, getCursorList/2, getSchoolUsersPids/1]).
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
@@ -150,9 +150,42 @@ handle_cast({remove_pid, Pid}, [{ Connection, Collection, AppId }]) ->
 handle_cast(_Msg, State) ->
 	{noreply, State}.
 
+handle_info(cleanup, [{ Connection, Collection, AppId }]) ->
+	case mongo:find(Connection, Collection, { status, online }, { name, 1, pid, 1, '_id', 0 }) of
+		Cursor ->
+			Result = mc_cursor:rest(Cursor),
+
+			FuncToProcessOnInactivePids  =   fun({ name, Name, pid, Pids }) ->
+												io:format("Inactive Pid : ~p.~n", [ { Name, return_active_pids_arr(Pids) } ]),
+												Docs = {'$set', {
+															pid, return_active_pids_arr(Pids),
+															status, getStatus(return_active_pids_arr(Pids))
+														}},
+												mongo:update(Connection, Collection, {name, Name}, Docs)
+											end,
+
+			[ FuncToProcessOnInactivePids(Res) || Res <- Result]
+	end,
+	{noreply, [{ Connection, Collection, AppId }]};
+
 handle_info(Info, State) ->
 	p("Mongo Info Got : ", Info),
 	{noreply, State}.
+
+%% @doc Function Travers throught the given list of Pids and return the list of only active Pids.
+return_active_pids_arr(Pids) ->
+	return_active_pids_arr(Pids, []).
+
+return_active_pids_arr([], Acc) ->
+	Acc;
+
+return_active_pids_arr([ Pid | Pids ], Acc) ->
+	case process_info(binary_to_term(Pid)) of
+		undefined ->
+			return_active_pids_arr(Pids, Acc);
+		_X ->
+			return_active_pids_arr(Pids, [ Pid | Acc ])
+	end.
 
 terminate(_Reason, _State) ->
 	ok.

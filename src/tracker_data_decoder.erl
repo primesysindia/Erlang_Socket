@@ -4,7 +4,7 @@
 -behaviour(gen_server).
 
 %% API
--export([start_link/0, send/1, sendLatLanToTrackPids/2]).
+-export([start_link/0, send/1, sendLatLanToTrackPids/2, send_gcm_msg/2]).
 
 %% gen_server callbacks
 -export([init/1,
@@ -25,6 +25,7 @@
 -define(Status_Protocol_Number, 16#13).
 -define(SNR_Protocol_Number, 16#14).
 -define(String_Protocol_Number, 16#15).
+-define(GFENCE_Protocol_Number, 16#16).
 -define(GPS_LBS_Status_Merged_Protocol_Number, 16#96).
 -define(LBS_Check_Loc_Via_Phone_No_Protocol_Number, 16#97).
 -define(LBS_Extension_Protocol_Number, 16#18).
@@ -35,6 +36,14 @@
 -define(Sync_Protocol_Number, 16#1F).
 -define(Server_Send_Cmd_To_Terminal_For_Setting_Protocol_Number, 16#80).
 -define(Server_Send_Cmd_To_Terminal_For_Checking_Protocol_Number, 16#81).
+-define(VT268_StartBit, "TRV").
+-define(VT268_StopBit, "#").
+-define(VT268_REQ_Login_Packet, "AP00").
+-define(VT268_RES_Login_Packet, "BP00").
+-define(VT268_REQ_GPS_LBS_Packet, "AP01").
+-define(VT268_RES_GPS_LBS_Packet, "BP01").
+-define(VT268_REQ_Alarm_Packet, "AP10").
+-define(VT268_RES_Alarm_Packet, "BP10").
 
 
 -record(state, {}).
@@ -128,8 +137,8 @@ handle_info({<<?StartBit:16, _PacketLength:8, ?Login_Info_Protocol_Number:8, Dev
 		0 ->
 			Doc = { device, DeviceIdDec, pid, term_to_binary(Pid), student, 0, parent, 0, track_pids, [] },
 			mongo_devices_ser:insert(Doc);
-		N ->
-			io:format("Cnt : ~p.~n", [N]),
+		_N ->
+%% 			io:format("Cnt : ~p.~n", [N]),
 			Command = {'$set', {
 				pid, term_to_binary(Pid)
 			}},
@@ -154,10 +163,10 @@ handle_info({<<?StartBit:16, _PacketLength:8, ?Login_Info_Protocol_Number:8, Dev
 %%--------------------------------------------------------------------
 handle_info({<<?StartBit:16, _PacketLength:8, ?GPS_Info_Protocol_Number:8, _Date_Time:48, _GPS_Msg_Len:8, Lat:32, Lan:32, Speed:8, Status:16, _Extension:16, SerialNumber:16, _CRCVerify:16, ?StopBit:16 >>, Pid}, _State) ->
 %% 	io:format("Event Got : ~p.~n.", [{?StartBit, PacketLength, ProtocolNumber, TerminalId, Identifier, ExtensionBit, InformationSerialNumber, CRCVerify}]),
-	io:fwrite("Got GPS Info Packet.~n"),
+%% 	io:fwrite("Got GPS Info Packet.~n"),
 	io:format("Lat Val : ~p.~n.", [ { getLatLanValDD(Lat), getLatLanValDD(Lan) }]),
-	io:format("Speed : ~p.~n.", [ Speed ]),
-	io:format("GPS Status : ~p.~n.", [ decodeGPSStatus(<<Status:16>>) ]),
+%% 	io:format("Speed : ~p.~n.", [ Speed ]),
+%% 	io:format("GPS Status : ~p.~n.", [ decodeGPSStatus(<<Status:16>>) ]),
 
 	sendNSaveGPSData( { Lat, Lan, Pid, Speed, Status } ),
 
@@ -179,13 +188,13 @@ handle_info({<<?StartBit:16, _PacketLength:8, ?GPS_Info_Protocol_Number:8, _Date
 %%--------------------------------------------------------------------
 %% 7878 0A 13   C0 00 64 0001      007A CFC6 0D0A
 handle_info({<<?StartBit:16, _PacketLength:8, ?Status_Protocol_Number:8, Terminal_Info:8, Voltage_Level:8, GSM_Signal_Strength:8, _Extension:16, SerialNumber:16, _CRCVerify:16, ?StopBit:16 >>, Pid}, _State) ->
-	io:fwrite("Got Status Info Packet.~n"),
-
-	io:format("Got Ter info : ~p.~n", [ decodeTerminalInfo({ tk102b, <<Terminal_Info:8>> }) ]),
-
-	io:format("Voltage Level : ~p.~n", [ Voltage_Level ]),
-
-	io:format("GSM Signal Strength : ~p.~n", [ GSM_Signal_Strength ]),
+%% 	io:fwrite("Got Status Info Packet.~n"),
+%%
+%% 	io:format("Got Ter info : ~p.~n", [ decodeTerminalInfo({ tk102b, <<Terminal_Info:8>> }) ]),
+%%
+%% 	io:format("Voltage Level : ~p.~n", [ Voltage_Level ]),
+%%
+%% 	io:format("GSM Signal Strength : ~p.~n", [ GSM_Signal_Strength ]),
 
 	sendMsgViaPid({ pid, term_to_binary(Pid) }, #{ event => device_status, data=> #{ terminal_info =>  decodeTerminalInfo({ tk102b, <<Terminal_Info:8>> }), voltage_level => Voltage_Level, gsm_signal_strength => GSM_Signal_Strength } }),
 
@@ -235,6 +244,11 @@ handle_info({ send_command, Cmd, ParentId }, _State) ->
 
 %% tracker_data_decoder:send({ send_command, "#smslink#190914", 505167 }).
 
+%% tracker_data_decoder:send({ send_command, "GFENCE", 505254 }).
+%% tracker_data_decoder:send({ send_command, "GFENCE,1,ON,0,N18.590489,E73.771062,1,,1", 505254 }).
+%% tracker_data_decoder:send({ send_command, "GFENCE,1,ON,0,N18.590489,E73.771062,1,,", 505254 }).
+%% tracker_data_decoder:send({ send_command, "GFENCE,1,ON,0,N18.590489,E73.771062,5,,1", 505254 }).
+
 %% tracker_data_decoder:send({ send_command, "GPSON", 505254 }).
 %% tracker_data_decoder:send({ send_command, "SERVER,0,54.68.103.211,6666,0", 505254 }).
 
@@ -257,7 +271,7 @@ handle_info({ send_command, Cmd, ParentId }, _State) ->
 %% @end
 %%--------------------------------------------------------------------
 handle_info({<<_StartBit:16, _PacketLength:8, ?Sync_Protocol_Number:8, _Date_Time:48, _Extension:16, _SerialNumber:16, _CRCVerify:16, _StopBit:16 >>, _Pid}, _State) ->
-	io:fwrite("Got Sync Info Packet.~n"),
+%% 	io:fwrite("Got Sync Info Packet.~n"),
 %% 	<<SerialNumber_1:8 , SerialNumber_2:8 >> = <<SerialNumber:16>>,
 %% 	{{Crc_1, Crc_2}} = crc:get_crc([ 05, ?Status_Protocol_Number, SerialNumber_1, SerialNumber_2]),
 %% 	Res_Packet = iolist_to_binary([5, ?Status_Protocol_Number, SerialNumber_1, SerialNumber_2, Crc_1, Crc_2 ]),
@@ -276,14 +290,16 @@ handle_info({<<_StartBit:16, _PacketLength:8, ?Sync_Protocol_Number:8, _Date_Tim
 %% @end
 %%--------------------------------------------------------------------
 handle_info({<<_StartBit:16, _PacketLength:8, ?Server_Send_Cmd_To_Terminal_For_Checking_Protocol_Number:8, Cmd_Len:8, Cmd_Content:Cmd_Len/binary-unit:8, _SerialNumber:16, _CRCVerify:16, _StopBit:16 >>, _Pid}, _State) ->
-	io:fwrite("Got Command ( Less That 255 Bytes. ) Info Packet.~n"),
-	io:format("Cmd Len : ~p.~n",[Cmd_Len]),
+%% 	io:fwrite("Got Command ( Less That 255 Bytes. ) Info Packet.~n"),
+%% 	io:format("Cmd Len : ~p.~n",[Cmd_Len]),
 	Len = Cmd_Len-8,
-	io:format("Cmd Len in Dec : ~p.~n",[Len]),
-	io:format("Data received from device : <<~s>>~n", [[io_lib:format("~2.16.0B",[X]) || <<X:8>> <= Cmd_Content ]]),
-	<<_Ser_Flag_Bit:32, Cmd:Len/binary-unit:8, _Reserved_Bit:32>> = Cmd_Content,
-	io:format("Data received from device : <<~s>>~n", [[io_lib:format("~2.16.0B",[X]) || <<X:8>> <= Cmd ]]),
-	io:format("Cmd : ~s.~n",[Cmd]),
+%% 	io:format("Cmd Len in Dec : ~p.~n",[Len]),
+%% 	io:format("Data received from device : <<~s>>~n", [[io_lib:format("~2.16.0B",[X]) || <<X:8>> <= Cmd_Content ]]),
+	<<_Ser_Flag_Bit:32, _Cmd:Len/binary-unit:8, _Reserved_Bit:32>> = Cmd_Content,
+%% 	io:format("Data received from device : <<~s>>~n", [[io_lib:format("~2.16.0B",[X]) || <<X:8>> <= Cmd ]]),
+%% 	io:format("Cmd : ~s.~n",[Cmd]),
+
+
 %% 	io:format("Cmd : ~p.~t : <<~s>>~n", [[io_lib:format("~2.16.0B",[X]) || <<X:8>> <= Rem ]]),
 %% 	<<SerialNumber_1:8 , SerialNumber_2:8 >> = <<SerialNumber:16>>,
 %% 	{{Crc_1, Crc_2}} = crc:get_crc([ 05, ?Status_Protocol_Number, SerialNumber_1, SerialNumber_2]),
@@ -303,17 +319,74 @@ handle_info({<<_StartBit:16, _PacketLength:8, ?Server_Send_Cmd_To_Terminal_For_C
 %% @end
 %%--------------------------------------------------------------------
 handle_info({<<_StartBit:16, _PacketLength:8, ?Server_Send_Cmd_To_Terminal_For_Checking_Protocol_Number:8, Cmd_Len:16, Cmd_Content:Cmd_Len/binary-unit:8, _SerialNumber:16, _CRCVerify:16, _StopBit:16 >>, _Pid}, _State) ->
-	io:fwrite("Got Command ( longer That 255 Bytes. ) Info Packet.~n"),
-	io:format("Cmd Len : ~p.~n",[Cmd_Len]),
+%% 	io:fwrite("Got Command ( longer That 255 Bytes. ) Info Packet.~n"),
+%% 	io:format("Cmd Len : ~p.~n",[Cmd_Len]),
 	Len = Cmd_Len-8,
-	io:format("Data received from device : <<~s>>~n", [[io_lib:format("~2.16.0B",[X]) || <<X:8>> <= Cmd_Content ]]),
-	<<_Ser_Flag_Bit:32, Cmd:Len/binary-unit:8, _Reserved_Bit:32>> = Cmd_Content,
-	io:format("Data received from device : <<~s>>~n", [[io_lib:format("~2.16.0B",[X]) || <<X:8>> <= Cmd ]]),
-	io:format("Large Cmd : ~s.~n",[Cmd]),
+%% 	io:format("Data received from device : <<~s>>~n", [[io_lib:format("~2.16.0B",[X]) || <<X:8>> <= Cmd_Content ]]),
+	<<_Ser_Flag_Bit:32, _Cmd:Len/binary-unit:8, _Reserved_Bit:32>> = Cmd_Content,
+%% 	io:format("Data received from device : <<~s>>~n", [[io_lib:format("~2.16.0B",[X]) || <<X:8>> <= Cmd ]]),
+%% 	io:format("Large Cmd : ~s.~n",[Cmd]),
+
 %% 	<<SerialNumber_1:8 , SerialNumber_2:8 >> = <<SerialNumber:16>>,
 %% 	{{Crc_1, Crc_2}} = crc:get_crc([ 05, ?Status_Protocol_Number, SerialNumber_1, SerialNumber_2]),
 %% 	Res_Packet = iolist_to_binary([5, ?Status_Protocol_Number, SerialNumber_1, SerialNumber_2, Crc_1, Crc_2 ]),
 %% 	Pid ! {reply, << ?StartBit:16, Res_Packet/binary, ?StopBit:16 >> },
+	{noreply, _State};
+
+%%--------------------------------------------------------------------
+%% @private
+%% @doc
+%% Handle the GFENCE alarm packet from Terminal to the Server. (0x16)
+%%
+%% @spec handle_info(Info, State) -> {noreply, State} |
+%%                                   {noreply, State, Timeout} |
+%%                                   {stop, Reason, State}
+%% @end
+%%--------------------------------------------------------------------
+handle_info({<<_StartBit:16, _PacketLength:8, ?GFENCE_Protocol_Number:8, _Date_Time:48, _GPS_Msg_Len:8, Lat:32, Lan:32, Speed:8, Status:16, _UnknownBits1:72, GeoFenceStatus:8, _UnknownBits2:32, _SerialNumber:16, _CRCVerify:16, ?StopBit:16 >>, Pid}, _State) ->
+
+	io:fwrite("Got GFENCE Alarm Packet.~n"),
+	io:fwrite("Got PID at GFENCE Alarm : ~p.~n", [Pid]),
+%	io:format("GFence Data : ~p.~n",[Data]),
+%	io:format("GFence Data : <<~s>>~n", [[io_lib:format("~2.16.0B",[X]) || <<X:8>> <= Data ]]),
+
+    io:format("Lat / Lan Val : ~p.~n.", [ { getLatLanValDD(Lat), getLatLanValDD(Lan) }]),
+    io:format("GeoFenceStatus : ~p.~n.", [ getGeoFenceStatus(GeoFenceStatus) ]),
+    io:format("Speed : ~p.~n.", [ Speed ]),
+    io:format("GPS Status : ~p.~n.", [ decodeGPSStatus(<<Status:16>>) ]),
+	sendNSaveGeoFenceData( { Lat, Lan, Pid, Speed, Status, getGeoFenceStatus(GeoFenceStatus), getFenceDet(1) } ),
+
+%	<<SerialNumber_1:8 , SerialNumber_2:8 >> = <<SerialNumber:16>>,
+%	{{Crc_1, Crc_2}} = crc:get_crc([ 05, ?GFENCE_Protocol_Number, SerialNumber_1, SerialNumber_2]),
+%	Res_Packet = iolist_to_binary([5, ?GPS_Info_Protocol_Number, SerialNumber_1, SerialNumber_2, Crc_1, Crc_2 ]),
+%	Pid ! { reply, << ?StartBit:16, Res_Packet/binary, ?StopBit:16 >> },
+
+% Protocol Implemented.
+%<<?StartBit:16, _PacketLength:8, ?GPS_Info_Protocol_Number:8, _Date_Time:48, _GPS_Msg_Len:8, Lat:32, Lan:32, Speed:8, Status:16, _Extension:16, SerialNumber:16, _CRCVerify:16, ?StopBit:16 >>
+%
+%7878 25 16 (_Date_Time:48)-100702132F05 _GPS_Msg_Len:8-C9 Lat:32-01FE9846 Lan:32-07EA36DD Speed:8-03 Status:16-145C
+%_UnknownBits1:72-090195A1139E00E51B, GeoFenceStatus:8-70, _UnknownBits2:40-7004040002, SerialNumber:16-00CE _CRCVerify:16-A6CE ?StopBit:16-0D0A
+
+%%  Out Message -
+%% 	Reply to device : <<7878051000C6B4260D0A>>
+%% 	Data received from device : <<78782516100702132F05C901FE984607EA36DD03145C090195A1139E00E51B700404000200CEA6CE0D0A>>
+%% 	Got GFENCE Alarm Packet.
+%% GFence Data : <<16,7,2,19,47,5,201,1,254,152,70,7,234,54,221,3,20,92,9,1,149,
+%% 161,19,158,0,229,27,112,4,4,0,2,0,206,166,206,13,10>>.
+%% GFence Data : <<100702132F05C901FE984607EA36DD03145C090195A1139E00E51B700404000200CEA6CE0D0A>>
+%%
+%% 1007 02132F05 C901FE984607EA36DD03145C090195A1139E00E51B7004040002 00CE A6CE 0D0A
+%%
+%% M = C901FE984607EA36DD03145C090195A1139E00E51B 70 04040002
+
+%%  In Message -
+%% Reply to device : <<7878051001E0E9CA0D0A>>
+%% Data received from device : <<78782516100702140E16CA01FE98EB07EA34DF021512090195A1139E00382E 68 04040002 01E8A97E0D0A>>
+%% Got GFENCE Alarm Packet.
+%% GFence Data : <<16,7,2,20,14,22,202,1,254,152,235,7,234,52,223,2,21,18,9,1,149,
+%% 161,19,158,0,56,46,104,4,4,0,2,1,232,169,126,13,10>>.
+%% GFence Data : <<100702140E16CA01FE98EB07EA34DF021512090195A1139E00382E680404000201E8A97E0D0A>>
+
 	{noreply, _State};
 
 %%%===================================================================
@@ -368,8 +441,8 @@ handle_info({<<?StartBit:16, _PacketLength:8, ?GPS_LBS_Merged_Info_Protocol_Numb
 %% 	io:format("Event Got : ~p.~n.", [{?StartBit, PacketLength, ProtocolNumber, TerminalId, Identifier, ExtensionBit, InformationSerialNumber, CRCVerify}]),
 	io:fwrite("Got TK102B GPS Info Packet.~n"),
 	io:format("Lat Val : ~p.~n.", [ { getLatLanValDD(Lat), getLatLanValDD(Lan) }]),
-	io:format("Speed : ~p.~n.", [ Speed ]),
-	io:format("GPS Status : ~p.~n.", [ decodeGPSStatus(<<Status:16>>) ]),
+%% 	io:format("Speed : ~p.~n.", [ Speed ]),
+%% 	io:format("GPS Status : ~p.~n.", [ decodeGPSStatus(<<Status:16>>) ]),
 
 	sendNSaveGPSData( { Lat, Lan, Pid, Speed, Status } ),
 
@@ -388,7 +461,57 @@ handle_info({<<?StartBit:16, _PacketLength:8, ?GPS_LBS_Merged_Info_Protocol_Numb
 	Pid ! {reply, << ?StartBit:16, Res_Packet/binary, ?StopBit:16 >> },
 	{noreply, _State};
 
-%% %%--------------------------------------------------------------------
+%%--------------------------------------------------------------------
+%% @private
+%% @doc
+%% Handle the Login Information package for VT 268 device. (AP00)
+%%
+%% @spec handle_info(Info, State) -> {noreply, State} |
+%%                                   {noreply, State, Timeout} |
+%%                                   {stop, Reason, State}
+%% @end
+%%--------------------------------------------------------------------
+handle_info({<< ?VT268_StartBit, ?VT268_REQ_Login_Packet, DeviceId:120, ?VT268_StopBit >>, Pid}, _State) ->
+	io:fwrite("Got VT268 Login Packet.~n"),
+	io:format("DeviceId : ~p.~n", [ binary_to_integer(<<DeviceId:120>>) ]),
+	DeviceIdInt = binary_to_integer(<<DeviceId:120>>),
+	case mongo_devices_ser:count({ device, DeviceIdInt }) of
+		0 ->
+			Doc = { device, DeviceIdInt, pid, term_to_binary(Pid), student, 0, parent, 0, track_pids, [] },
+			mongo_devices_ser:insert(Doc);
+		N ->
+			io:format("Cnt : ~p.~n", [N]),
+			Command = {'$set', {
+				pid, term_to_binary(Pid)
+			}},
+			mongo_devices_ser:update({ device, DeviceIdInt }, Command)
+	end,
+
+	Pid ! {reply, << ?VT268_StartBit, ?VT268_RES_Login_Packet, ?VT268_StopBit >> },
+	{noreply, _State};
+
+
+%%--------------------------------------------------------------------
+%% @private
+%% @doc
+%% Handle the GPS and LBS Combined Information package. (0x12)
+%%
+%% @spec handle_info(Info, State) -> {noreply, State} |
+%%                                   {noreply, State, Timeout} |
+%%                                   {stop, Reason, State}
+%% @end
+%%--------------------------------------------------------------------
+handle_info({<< ?VT268_StartBit, ?VT268_REQ_GPS_LBS_Packet, _Date:48, "A", Lat:80, Lan:88, Speed:40, _Data/binary >>, Pid}, _State) ->
+%% 	io:format("Event Got : ~p.~n.", [{?StartBit, PacketLength, ProtocolNumber, TerminalId, Identifier, ExtensionBit, InformationSerialNumber, CRCVerify}]),
+	io:fwrite("Got VT268 GPS Info Packet.~n"),
+	io:format("Lat Val : ~p.~n.", [ { getLatLanValDD({ vt268, <<Lat:80>> }), getLatLanValDD({ vt268,  <<Lan:80>> }) }]),
+
+	sendNSaveGPSData( { vt268, getLatLanValDD({ vt268, <<Lat:80>> }), getLatLanValDD({ vt268,  <<Lan:80>> }), Pid, binary_to_float(<<Speed:40>>) } ),
+
+	Pid ! {reply, << ?VT268_StartBit, ?VT268_RES_GPS_LBS_Packet, ?VT268_StopBit >> },
+	{noreply, _State};
+
+%%--------------------------------------------------------------------
 %% %% @private
 %% %% @doc
 %% %% Handling all non call/cast messages
@@ -444,19 +567,27 @@ code_change(_OldVsn, State, _Extra) ->
 
 %% @doc Return the Date and time stamp.
 -spec get_date_time() -> binary().
-get_date_time() -> bson:unixtime_to_secs(erlang:now()).
+get_date_time() -> bson:unixtime_to_secs(os:timestamp()).
 
 %% @doc Return the Date and time stamp.
 -spec sendLatLanToTrackPids(tuple(), any()) -> atom().
 sendLatLanToTrackPids({ device, DeviceId }, Msg) ->
 	case mongo_devices_ser:getTrackPidsForDeviceId({ device, DeviceId }) of
-		{track_pids, L} -> [ binary_to_term(Pid) ! {irc, Msg} || Pid <- L ];
+		{track_pids, L} ->
+			[ binary_to_term(Pid) ! {irc, Msg} || Pid <- L ];
 		track_pids_not_found -> track_pids_not_found
 	end.
 
-
 sendNSaveGPSData( { Lat, Lan, _Pid, _Speed, _Status } ) when Lat =< 0; Lan =< 0 ->
 	io:format("Got Lat : ~p and Lan : ~p.~n",[Lat, Lan]);
+
+sendNSaveGPSData( { vt268, Lat, Lan, Pid, Speed } ) ->
+	{ device, DeviceId } = mongo_devices_ser:getDeviceId({pid, term_to_binary(Pid)}),
+	Timestamp = get_date_time(),
+
+	sendLatLanToTrackPids({ device, DeviceId }, #{ event => current_location, data=> #{ lat => Lat, lan => Lan, speed => Speed, timestamp => Timestamp } }),
+
+	mongo_location_ser:insert({ device, DeviceId, location, { lat, Lat, lon, Lan }, speed, Speed, timestamp, Timestamp, status });
 
 sendNSaveGPSData( { Lat, Lan, Pid, Speed, Status } ) ->
 	{ device, DeviceId } = mongo_devices_ser:getDeviceId({pid, term_to_binary(Pid)}),
@@ -467,6 +598,54 @@ sendNSaveGPSData( { Lat, Lan, Pid, Speed, Status } ) ->
 	sendLatLanToTrackPids({ device, DeviceId }, #{ event => current_location, data=> #{ lat => LatVal, lan => LanVal, speed => Speed, timestamp => Timestamp } }),
 
 	mongo_location_ser:insert({ device, DeviceId, location, { lat, LatVal, lon, LanVal }, speed, Speed, timestamp, Timestamp, status, decodeGPSStatus(<<Status:16>>) }).
+
+sendNSaveGeoFenceData( { Lat, Lan, Pid, Speed, Status, GeoFenceStatus, FenceDet } ) ->
+	io:format("Got PID : ~p.~n",[ Pid ]),
+	{ device, DeviceId } = mongo_devices_ser:getDeviceId({pid, term_to_binary(Pid)}),
+	LatVal = getLatLanValDD(Lat),
+	LanVal = getLatLanValDD(Lan),
+	Timestamp = get_date_time(),
+
+	FenceDataMap = #{ event => geo_fence_alert, data => #{ lat => LatVal, lan => LanVal, speed => Speed, timestamp => Timestamp, geo_fence_status => GeoFenceStatus, fence_det => FenceDet } },
+
+	send_gcm_msg(<<"APA91bHPFGh7IAQlREo0KL2g2ZmkzzeGHNOUfe44eHDwycU6ysEPpZGRcRGmumqcFETbGGAFAlZ48ky-jTUmHUP4yydPOyIF1ZvQoXAw_uMA9oEMHDMNOA_e-2l3GS07f6hssLtwgWPU">>, FenceDataMap),
+
+	sendLatLanToTrackPids({ device, DeviceId }, FenceDataMap ),
+
+	mongo_geo_fence_ser:insert({ device, DeviceId, geo_fence_data, { lat, LatVal, lon, LanVal }, speed, Speed, timestamp, Timestamp, status, decodeGPSStatus(<<Status:16>>), geo_fence_status, GeoFenceStatus, fence_id, maps:find(fence_id,FenceDet) }).
+
+getFenceDet( _FenceId ) ->
+	#{ fence_id => 1, fence_no => 1, fence_name => "First Fence", type => circle, center => #{ lat => 18.590255, lan => 73.771835 }, radius => 100 }.
+
+%% @date05Aug2016 : Piyush : This function is used to Send GCM message to the Client.
+%% Map Ex - tracker_data_decoder:send_gcm_msg(<<"APA91bHPFGh7IAQlREo0KL2g2ZmkzzeGHNOUfe44eHDwycU6ysEPpZGRcRGmumqcFETbGGAFAlZ48ky-jTUmHUP4yydPOyIF1ZvQoXAw_uMA9oEMHDMNOA_e-2l3GS07f6hssLtwgWPU">>, #{ lat => 18.590255, lan => 73.771835, speed => 5, timestamp => 1469346453, geo_fence_status => in, fence_det => #{ fence_id => 1, fence_no => 1, fence_name => <<"First Fence">>, type => circle, center => #{ lat => 18.590255, lan => 73.771835 }, radius => 100 } }).
+%% Ex - tracker_data_decoder:send_gcm_msg(<<"APA91bHPFGh7IAQlREo0KL2g2ZmkzzeGHNOUfe44eHDwycU6ysEPpZGRcRGmumqcFETbGGAFAlZ48ky-jTUmHUP4yydPOyIF1ZvQoXAw_uMA9oEMHDMNOA_e-2l3GS07f6hssLtwgWPU">>, <<"Hi Again Rupesh...">>).
+%% Curl Ex -
+%% curl --header "Authorization: key=AIzaSyCSdcZQ3plIXs3zAazsskOaId6Wkq-hA7o" --header "Content-Type: application/json" https://android.googleapis.com/gcm/send -d "{\"registration_ids\":[\"APA91bFsORUIa_-qNaeAQQfN5vSDMC6STnza8pFbJi1g10Lx4dtlgOQnWIfUz8vZjeiP0zRRl3_JndAKgsNd7fqwvOvHeGP1ewVSgDpE_-WiBF_bCZ5zUoQlxsllTcAeGT2WhNcJBOFX\"], \"data\" : { \"message\" : \"Hi Rupesh\" } }"
+
+send_gcm_msg(RegisteredId, Message) ->
+	%% Create Json struct
+	Method = post,
+	URL = "http://android.googleapis.com/gcm/send",
+	ServerKey = "key=AIzaSyCSdcZQ3plIXs3zAazsskOaId6Wkq-hA7o",
+	Header = [{"Authorization",ServerKey}],
+	Type = "application/json",
+	Body =  binary_to_list(jsx:encode(#{ registration_ids => [ RegisteredId ], data => #{ message => Message } })),
+io:format("Body : ~p.~n", [Body]),
+	HTTPOptions = [],
+	Options = [],
+	_R = httpc:request(Method, {URL, Header, Type, Body}, HTTPOptions, Options).
+%% 	try R of
+%% 		{ok, {{_,200,_},_,RespBody}} ->
+%% 			{ok, RespBody};
+%% 		{error, Reason } ->
+%% 			{error, Reason};
+%% 		{ok, {{StatusLine,_,_},_,RespBody}} ->
+%% 			{error, {StatusLine, RespBody}};
+%% 		BigError -> {error, BigError}
+%% 	catch
+%% 		Throw -> {error, caught, Throw}
+%% 	end.
 
 sendMsgViaPid(Cond, Msg) ->
 	case mongo_devices_ser:getParentId(Cond) of
@@ -500,11 +679,19 @@ decodeGPSStatus(<<_:1, _:1, GPSRealTime:1, GPSPosition:1, LonDirection:1, LatDir
 	         end,
 	[ RealTime, Position, LonDir, LatDir, {cource, Cource} ].
 
+%% @doc Return the Lat / Lon in Decimal degrees (DD) Format for VT268 device.
+%% VT265 Location Calculation Logic
+%% In - 18 35.1526N 073 46.2691E
+%% Process - .d = 35.1526 / 60
+%%           Decimal Degrees (DD) = 18 + .d
+getLatLanValDD({ vt268,  Bin }) ->
+	B = binary_part(Bin,{0, byte_size(Bin)-1}),
+	list_to_integer(binary_to_list(B, 1, 2)) + ( list_to_float(binary_to_list(B, 3, byte_size(B))) / 60);
 
 %% @doc Return the Lat / Lon in Decimal degrees (DD) Format.
 getLatLanValDD(Dec) ->
 	Lat = (Dec/30000)/60,
-	io:format("Lat/Lan : ~p.~n",[Lat]),
+%% 	io:format("Lat/Lan : ~p.~n",[Lat]),
 	Lat.
 
 %% @doc Return the Lat / Lon in Degrees and decimal minutes (DMM) Format.
@@ -551,13 +738,13 @@ decodeTerminalInfo({ pt103, << _:1, GPSTracking:1, Status:3, Charging:1, _:2 >> 
 					end,
 	Stat    =   case <<Status:3>> of
 				   <<000:3>> -> 0;
-				   <<001:3>> -> 1;
-				   <<010:3>> -> 2;
-				   <<011:3>> -> 3;
-				   <<100:3>> -> 4;
-				   <<101:3>> -> 5;
-				   <<110:3>> -> 6;
-				   <<111:3>> -> 7
+				   <<001:3>> -> 1
+%				   <<010:3>> -> 2;
+%				   <<011:3>> -> 3;
+%				   <<100:3>> -> 4;
+%				   <<101:3>> -> 5;
+%				   <<110:3>> -> 6;
+%				   <<111:3>> -> 7
 		       end,
 	Charg   =   case <<Charging:1>> of
 					<<0:1>> -> not_charging;
@@ -582,9 +769,9 @@ decodeTerminalInfo({ tk102b, << Fortified:1, ACC:1, Charged:1, Status:3, GPS:1, 
 	StatusVAL    =   case <<Status:3>> of
 				   <<000:3>> -> 0;
 				   <<001:3>> -> 1;
-				   <<010:3>> -> 2;
-				   <<011:3>> -> 3;
-				   <<100:3>> -> 4;
+%				   <<010:3>> -> 2;
+%				   <<011:3>> -> 3;
+%				   <<100:3>> -> 4;
 					_ -> 0
 		       end,
 	GPSVAL   =   case <<GPS:1>> of
@@ -625,3 +812,11 @@ cmd_to_list([ H | T ], Acc) ->
 %% tracker_data_decoder:send({ send_command, "GPSON", 505163 }).
 
 %% tracker_data_decoder:sendLatLanToTrackPids({ device, 358740050123966 }, #{ event => current_location, data=> #{ lat => 18.664402, lan => 73.778069, speed => 25, timestamp => 1432562051 } }).
+
+%% This function is used to Return the Geo Fence IN / OUT Status.
+getGeoFenceStatus(StatusData) ->
+	Status    =   case StatusData of
+		              104 -> in;
+		              112 -> out
+	              end,
+	Status.

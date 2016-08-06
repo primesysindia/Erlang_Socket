@@ -1,4 +1,4 @@
--module(mongo_devices_ser).
+ -module(mongo_devices_ser).
 -behaviour(gen_server).
 -export([start_link/0, count/1, insert/1, update/2, getCursorList/2, removePid/1, getDeviceId/1, setDeviceId/3, addDeviceTrackPid/1, removeDeviceTrackPid/1, getTrackPidsForDeviceId/1, getParentId/1, getPid/1]).
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
@@ -10,11 +10,11 @@ start_link() ->
 
 %% Macros
 -define(DEMO_STUDENT, <<"demo_student">>).
--define(DEMO_STUDENT_DEVICE, 355488020107485).
+-define(DEMO_STUDENT_DEVICE, 355488020113737). %% TK102
 -define(DEMO_CAR, <<"demo_car">>).
--define(DEMO_CAR_DEVICE, 355488020113718).
+-define(DEMO_CAR_DEVICE, 356521043815716). %% VT680
 -define(DEMO_PET, <<"demo_pet">>).
--define(DEMO_PET_DEVICE, 358740050123966).
+-define(DEMO_PET_DEVICE, 358740050124519).  %% PT301 :: Parnika Device
 
 %%% API's
 
@@ -113,9 +113,9 @@ handle_call({get_device_id, { student_id, StudentId } }, _From, [{ Connection, C
 			     {device, DeviceId};
 		     {} ->
 			     if
-				     StudentId == ?DEMO_STUDENT -> {device, ?DEMO_STUDENT_DEVICE};
-				     StudentId == ?DEMO_CAR -> {device, ?DEMO_CAR_DEVICE };
-				     StudentId == ?DEMO_PET -> {device, ?DEMO_PET_DEVICE };
+				     StudentId == ?DEMO_STUDENT -> { device, ?DEMO_STUDENT_DEVICE };
+				     StudentId == ?DEMO_CAR -> { device, ?DEMO_CAR_DEVICE };
+				     StudentId == ?DEMO_PET -> { device, ?DEMO_PET_DEVICE };
 				     true -> {ok, error}
 			     end
 	     end,

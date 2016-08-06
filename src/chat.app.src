@@ -10,6 +10,7 @@
 		kernel,
 		stdlib,
 		crypto,
+		inets,
 		ranch,
 		cowlib,
 		cowboy,

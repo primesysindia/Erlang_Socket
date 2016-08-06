@@ -4,7 +4,7 @@
 -behaviour(gen_server).
 
 %% API
--export([start_link/0, broadcast/1, broadcast/2 ]).
+-export([start_link/0, broadcast/1, broadcast/2, get_date_time/0 ]).
 
 %% gen_server callbacks
 -export([init/1,
@@ -218,7 +218,7 @@ handle_info({ group_msg, Pid, GrpId, UserId, Msg, RefId }, State) ->
 	{ members, List } =	mongo_group_ser:getMembers(GrpId),
 	[ msg_to( { name, Name }, { pid, Pid }, #{ event => msg_received, data => #{ from => UserId, to => GrpId, msg => Msg, timestamp => Timestamp, type => <<"g">> }} ) || Name <- List ],
 	irc ! { store_msg, { timestamp, Timestamp, from, UserId, to, GrpId, msg, Msg, type, <<"g">> } },
-	irc ! { msg_ack, RefId, Timestamp, Pid },
+	irc ! { msg_ack, Pid, #{ ref_id => RefId,  timestamp => Timestamp } },
 	{noreply, State};
 
 %% irc ! { add_friend, self(), <<"505167">>, <<"Piyush">>, <<"505268">>, <<"Amit">>  }.
@@ -246,8 +246,8 @@ handle_info({ update_friend_status, Pid, UserId, FriendId, Status }, State) ->
 	end,
 	{noreply, State};
 
-handle_info({ msg_ack, RefId, Timestamp, Pid }, State) ->
-	Pid ! {irc, #{event => msg_ack, data => #{ ref_id => RefId,  timestamp => Timestamp } }},
+handle_info({ msg_ack, Pid, Data }, State) ->
+	Pid ! {irc, #{event => msg_ack, data => Data }},
 	{noreply, State};
 
 handle_info({ error, Pid, Error }, State) ->
@@ -276,7 +276,7 @@ handle_info({send_msg, Pid, { From, To, Message, Type, RefId }}, State) ->
 		_T ->
 			io:format("Ack Msg @ : ~p.~n",[{ From, To, Message, Type, RefId, Timestamp }]),
 			msg_to({ msg_to_users_list, [ To, From ] }, { pid, Pid }, #{ event => msg_received, data => #{ from => From, to => To, msg => Message, timestamp => Timestamp, type => <<"s">> } } ),
-			irc ! { msg_ack, RefId, Timestamp, Pid }
+			irc ! { msg_ack, Pid, #{ ref_id => RefId,  timestamp => Timestamp } }
 	end,
 	irc ! { store_msg, { timestamp, Timestamp, from, From, to, To, msg, Message, type, Type } },
 	{noreply, State};
@@ -300,7 +300,7 @@ handle_info({ school_msg, Pid, { From, To, StudentId, Message, Type, RefId } }, 
 
 	io:format("Ack Msg @ : ~p.~n",[{ From, To, Message, Type, RefId, Timestamp }]),
 	msg_to({ msg_to_users_list, [ To, From ] }, { pid, Pid }, #{ event => msg_received, data => #{ from => From, to => To, msg => Message, timestamp => Timestamp, type => Type, student_id =>StudentId } } ),
-	irc ! { msg_ack, RefId, Timestamp, Pid },
+	irc ! { msg_ack, Pid, #{ ref_id => RefId,  timestamp => Timestamp } },
 
 	irc ! { store_msg, { timestamp, Timestamp, from, From, to, To, msg, Message, type, Type, student_id, StudentId } },
 	{noreply, State};
@@ -374,7 +374,7 @@ broadcast(Data, Msg) ->
 
 %% @doc Return the Date and time stamp.
 -spec get_date_time() -> binary().
-get_date_time() -> bson:unixtime_to_secs(erlang:now()).
+get_date_time() -> bson:unixtime_to_secs(os:timestamp()).
 
 send_msg_to(Pids, Msg) ->
 	[ binary_to_term(Pid) ! {irc, Msg} || Pid <- Pids ].

@@ -317,7 +317,7 @@ code_change(_OldVsn, State, _Extra) ->
 
 %% @doc Generate Unique Group Ids.
 generate_grp_id(Connection, Collection) ->
-	{A1,A2,A3} = now(),
+	{A1,A2,A3} = os:timestamp(),
 	random:seed(A1, A2, A3),
 	Id = random:uniform(999999999),
 	case mongo:count(Connection, Collection, {grp_id, Id}) of
